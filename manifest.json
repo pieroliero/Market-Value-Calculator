@@ -1,0 +1,16 @@
+{
+  "name": "Market Value Calculator™",
+  "short_name": "MV Calc",
+  "description": "You're a 6 in LA. A 10 in Bangkok. Find your highest exchange rate.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#f0a500",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["lifestyle", "travel"],
+  "screenshots": []
+}
