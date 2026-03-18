@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Market Value Calculator™ | Passport Pro by PieroLiero</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f0a500">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MV Calc">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta property="og:title" content="Market Value Calculator™ | Passport Pro"/>
 <meta property="og:description" content="You're a 6 in LA. An 8 in Medellín. A 10 in Bangkok. Find your highest exchange rate."/>
 <style>
@@ -444,13 +451,28 @@
   }
   .footer-note a { color: var(--gold); text-decoration: none; }
 
+  /* ── LOCKED BLUR ── */
+  .locked-blur {
+    filter: blur(5px);
+    pointer-events: none;
+    user-select: none;
+    transition: filter 0.5s ease;
+    margin-top: 20px;
+  }
+  .locked-blur.unlocked {
+    filter: none;
+    pointer-events: auto;
+    user-select: auto;
+  }
+
   /* ── GUIDE EMAIL GATE ── */
   .guide-gate {
-    margin-top: 12px;
+    margin-top: 20px;
+    margin-bottom: 0;
     background: var(--card2);
-    border: 1px solid var(--border);
+    border: 1px solid rgba(240,165,0,0.3);
     border-radius: 12px;
-    padding: 18px;
+    padding: 20px;
     text-align: center;
   }
   .guide-gate-label {
@@ -568,7 +590,7 @@
       <p>Same guy. Different market.<br>Answer 4 questions and we'll tell you exactly where your exchange rate goes through the roof.</p>
       <div class="stats-row">
         <div class="stat"><span class="stat-num">4</span><span class="stat-label">Questions</span></div>
-        <div class="stat"><span class="stat-num">9</span><span class="stat-label">Markets</span></div>
+        <div class="stat"><span class="stat-num">10</span><span class="stat-label">Markets</span></div>
         <div class="stat"><span class="stat-num">1</span><span class="stat-label">Best Play</span></div>
       </div>
       <button class="btn-start" onclick="startCalc()">Calculate My Market →</button>
@@ -719,6 +741,18 @@ const markets = {
       mixed:     { label: "Bucharest Wildcard 🌐",        rate: "+3.1 ATT", desc: "Mixed heritage men in Bucharest carry the same unclassifiable energy that works across Eastern Europe — but at a fraction of the cost. The women are curious, the city is vibrant, and the exchange rate rewards anyone who looks interesting and moves with purpose.", tags: ["Bucharest Wildcard","Mixed Edge","Budget Arbitrage","Visual Premium"] },
       middleeastern: { label: "Bucharest Arabian Nights 🌙", rate: "+4.5 ATT", desc: "Romania is arguably the single best European market for Middle Eastern men on the entire board. The novelty is off the charts — you are genuinely rare, the curiosity is completely unsaturated, and the budget is fraction of Western Europe. Romanian women have absorbed the wealthy, passionate, exotic Arabian archetype through media and culture — and almost none of them have ever actually met one. You walk in and you ARE the narrative. Maximum arbitrage at minimum cost. This is the highest exchange rate available to you in Europe.", tags: ["Bucharest Arabian","Maximum Arbitrage","Narrative Premium","Budget King"] },
     }
+  },
+  vietnam: {
+    city: "Vietnam", flag: "🇻🇳", country: "Southeast Asia",
+    premiums: {
+      white:     { label: "Western God Tier 🌍",           rate: "+4.5 ATT", desc: "Vietnam has one of the strongest Western premiums in all of Southeast Asia — and it's been that way for decades. In Ho Chi Minh City and Hanoi, a white Western man is aspirational, exotic, and immediately elevated. The market is young, the budget goes absurdly far, and the depth of options is staggering. You don't need to be rich. You just need to show up. Best of all: the women here are genuinely curious, genuinely warm, and the competition from local guys is minimal for your profile. This is one of the best-value exchange rates on the entire board.", tags: ["Western God Tier","Extreme Premium","Budget Friendly","Top-Tier ROI"] },
+      black:     { label: "Western Exotic Vietnam 🌟",      rate: "+3.2 ATT", desc: "Vietnam's fascination with Western culture extends to Black men with real curiosity and openness. You're rare, you carry a cultural energy that stands out completely, and the budget-to-ROI ratio here is among the best anywhere. HCMC rewards presence and confidence — and you bring both.", tags: ["Western Exotic","Cultural Curiosity","Budget ROI","HCMC Premium"] },
+      latino:    { label: "Latin Heat in HCMC 🌶️",         rate: "+3.3 ATT", desc: "Your passion and warmth land differently in a culture known for its reserve — and Vietnam responds. HCMC nightlife is vibrant, the budget stretches incredibly far, and a Latino man who moves with energy and confidence stands out in every room. The exchange rate here is strong and the cost of entry is almost nothing.", tags: ["Latin Heat","Cultural Contrast","Budget King","HCMC Play"] },
+      eastasian: { label: "Cultural Proximity Vietnam 🎌",  rate: "+2.5 ATT", desc: "East Asian men in Vietnam benefit from cultural proximity — similar aesthetics, familiar social codes, and the K-drama wave building real demand. The exchange rate is steady rather than dramatic, but the market is accessible, the budget goes far, and the lifestyle ROI stacks up fast.", tags: ["Cultural Proximity","K-Drama Wave","Steady ROI","Budget Lifestyle"] },
+      southasian: { label: "Bollywood in Saigon 🎬",        rate: "+3.0 ATT", desc: "Bollywood has been seeding cultural goodwill in Southeast Asia for decades — and Vietnam is no exception. Your profile here is genuinely interesting, the novelty is real, and the budget makes this one of the highest ROI markets available to South Asian men anywhere in the world.", tags: ["Bollywood Export","Cultural Goodwill","Novelty Premium","High ROI"] },
+      mixed:     { label: "Global Saigon 🌐",                rate: "+3.3 ATT", desc: "Mixed heritage men thrive in Vietnam — a country that finds ambiguity genuinely interesting and Western features aspirational. HCMC is young, vibrant, and one of the best-value cities on earth. Your look is interesting, your budget goes further than almost anywhere else, and the market rewards both.", tags: ["Global Premium","Mixed Edge","Saigon ROI","Budget Arbitrage"] },
+      middleeastern: { label: "Arabian Saigon 🌙",           rate: "+3.0 ATT", desc: "Middle Eastern men in Vietnam carry genuine novelty — you're rare, visually striking, and the market here is young and curious. HCMC is one of the most affordable cities in Southeast Asia and your profile stands out in a way that's hard to replicate elsewhere in the region.", tags: ["Arabian Novelty","Scarcity Premium","Budget Play","HCMC Edge"] },
+    }
   }
 };
 
@@ -729,13 +763,13 @@ const questions = [
     title: "What's your ethnic background?",
     sub: "The algorithm is neutral. Your background determines your baseline exchange rate.",
     options: [
-      { icon: "🌍", label: "White / European", sub: "Irish, Italian, German, Polish, etc.", scores: { japan: 4, korea: 4, thailand: 3, philippines: 4, colombia: 2, sweden: 1, brazil: 4, poland: 2, romania: 1 } },
-      { icon: "✊🏿", label: "Black / African American", sub: "Sub-Saharan African ancestry", scores: { sweden: 4, brazil: 3, colombia: 4, japan: 2, thailand: 2, philippines: 2, poland: 4, korea: 1, romania: 1 } },
-      { icon: "🌶️", label: "Hispanic / Latino", sub: "Mexican, Colombian, Puerto Rican, etc.", scores: { poland: 5, sweden: 4, philippines: 3, colombia: 2, brazil: 2, japan: 2, thailand: 2, korea: 2, romania: 4 } },
-      { icon: "🎌", label: "East Asian", sub: "Chinese, Japanese, Korean, Filipino, etc.", scores: { brazil: 5, colombia: 4, sweden: 3, poland: 3, philippines: 2, japan: 1, thailand: 3, korea: 2, romania: 1 } },
-      { icon: "🎬", label: "South Asian / Indian", sub: "Indian, Pakistani, Bangladeshi, Sri Lankan, etc.", scores: { philippines: 4, colombia: 4, brazil: 2, thailand: 6, sweden: 2, poland: 2, japan: 2, korea: 1, romania: 1 } },
-      { icon: "🌙", label: "Middle Eastern / Arab", sub: "Lebanese, Egyptian, Moroccan, Turkish, Gulf Arab, etc.", scores: { romania: 7, poland: 4, brazil: 4, philippines: 4, colombia: 2, thailand: 2, sweden: 2, japan: 1, korea: 1 } },
-      { icon: "🌐", label: "Mixed / Other", sub: "Mixed heritage or other background", scores: { colombia: 3, brazil: 3, thailand: 3, philippines: 3, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "🌍", label: "White / European", sub: "Irish, Italian, German, Polish, etc.", scores: { japan: 4, korea: 4, thailand: 3, philippines: 4, colombia: 2, sweden: 1, brazil: 4, poland: 2, romania: 1, vietnam: 6 } },
+      { icon: "✊🏿", label: "Black / African American", sub: "Sub-Saharan African ancestry", scores: { sweden: 4, brazil: 3, colombia: 4, japan: 2, thailand: 2, philippines: 2, poland: 4, korea: 1, romania: 4, vietnam: 3 } },
+      { icon: "🌶️", label: "Hispanic / Latino", sub: "Mexican, Colombian, Puerto Rican, etc.", scores: { poland: 5, sweden: 4, philippines: 3, colombia: 2, brazil: 2, japan: 2, thailand: 2, korea: 2, romania: 4, vietnam: 3 } },
+      { icon: "🎌", label: "East Asian", sub: "Chinese, Japanese, Korean, Filipino, etc.", scores: { brazil: 5, colombia: 4, sweden: 3, poland: 3, philippines: 2, japan: 1, thailand: 3, korea: 2, romania: 1, vietnam: 2 } },
+      { icon: "🎬", label: "South Asian / Indian", sub: "Indian, Pakistani, Bangladeshi, Sri Lankan, etc.", scores: { philippines: 4, colombia: 4, brazil: 2, thailand: 6, sweden: 2, poland: 2, japan: 2, korea: 1, romania: 1, vietnam: 2 } },
+      { icon: "🌙", label: "Middle Eastern / Arab", sub: "Lebanese, Egyptian, Moroccan, Turkish, Gulf Arab, etc.", scores: { romania: 2, poland: 2, brazil: 5, philippines: 5, colombia: 5, thailand: 5, sweden: 2, japan: 1, korea: 1, vietnam: 4 } },
+      { icon: "🌐", label: "Mixed / Other", sub: "Mixed heritage or other background", scores: { colombia: 3, brazil: 3, thailand: 3, philippines: 3, sweden: 5, japan: 1, poland: 3, korea: 1, romania: 3, vietnam: 3 } },
     ]
   },
   {
@@ -743,11 +777,11 @@ const questions = [
     title: "How would you describe your style?",
     sub: "Presentation multiplies your base rate.",
     options: [
-      { icon: "✨", label: "Clean & polished", sub: "K-Drama energy — structured, groomed, intentional", scores: { brazil: 3, colombia: 3, sweden: 2, poland: 3, japan: 3, philippines: 2, korea: 3, thailand: 2, romania: 1 }, mixedScores: { brazil: 5, philippines: 4, colombia: 2, thailand: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "🔥", label: "Streetwear / urban", sub: "Modern, confident, edge", scores: { sweden: 3, brazil: 2, colombia: 4, japan: 2, philippines: 2, korea: 2, thailand: 2, poland: 2, romania: 2 }, mixedScores: { colombia: 5, brazil: 3, philippines: 2, thailand: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "👔", label: "Classic / business casual", sub: "Button-ups, dress shoes, clean cuts", scores: { japan: 3, sweden: 2, colombia: 2, brazil: 2, philippines: 3, thailand: 2, korea: 2, poland: 3, romania: 1 }, mixedScores: { colombia: 5, brazil: 4, philippines: 2, thailand: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "💪", label: "Athletic / gym-forward", sub: "Fit physique, activewear, fitness lifestyle", scores: { brazil: 3, colombia: 3, thailand: 3, philippines: 2, sweden: 2, japan: 2, poland: 3, korea: 2, romania: 2 }, mixedScores: { brazil: 5, colombia: 3, philippines: 3, thailand: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "😎", label: "Relaxed / low-effort", sub: "T-shirts, comfortable, unbothered", scores: { thailand: 4, philippines: 3, brazil: 2, colombia: 4, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 3 }, mixedScores: { thailand: 5, philippines: 4, colombia: 2, brazil: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "✨", label: "Clean & polished", sub: "K-Drama energy — structured, groomed, intentional", scores: { brazil: 3, colombia: 3, sweden: 2, poland: 3, japan: 3, philippines: 2, korea: 3, thailand: 2, romania: 1, vietnam: 4 }, mixedScores: { brazil: 5, philippines: 4, colombia: 2, thailand: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: 4 } },
+      { icon: "🔥", label: "Streetwear / urban", sub: "Modern, confident, edge", scores: { sweden: 3, brazil: 2, colombia: 4, japan: 2, philippines: 2, korea: 2, thailand: 2, poland: 2, romania: 2, vietnam: 4 }, mixedScores: { colombia: 5, brazil: 3, philippines: 2, thailand: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: 4 } },
+      { icon: "👔", label: "Classic / business casual", sub: "Button-ups, dress shoes, clean cuts", scores: { japan: 3, sweden: 2, colombia: 2, brazil: 2, philippines: 3, thailand: 2, korea: 2, poland: 3, romania: 1, vietnam: 2 }, mixedScores: { colombia: 5, brazil: 4, philippines: 2, thailand: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: 2 } },
+      { icon: "💪", label: "Athletic / gym-forward", sub: "Fit physique, activewear, fitness lifestyle", scores: { brazil: 3, colombia: 3, thailand: 3, philippines: 2, sweden: 2, japan: 2, poland: 3, korea: 2, romania: 2, vietnam: 4 }, mixedScores: { brazil: 5, colombia: 3, philippines: 3, thailand: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: 4 } },
+      { icon: "😎", label: "Relaxed / low-effort", sub: "T-shirts, comfortable, unbothered", scores: { thailand: 4, philippines: 3, brazil: 2, colombia: 4, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 3, vietnam: -2 }, mixedScores: { thailand: 5, philippines: 4, colombia: 2, brazil: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: -2 } },
     ]
   },
   {
@@ -755,10 +789,10 @@ const questions = [
     title: "What's your age range?",
     sub: "Different markets peak at different stages.",
     options: [
-      { icon: "🎓", label: "18–25", sub: "College-age energy, unwritten", scores: { japan: 2, brazil: 3, colombia: 3, thailand: 2, philippines: 2, sweden: 2, korea: 2, poland: 2, romania: 3 }, mixedScores: { colombia: 4, brazil: 3, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "📱", label: "26–32", sub: "Prime years — put together, ambitious", scores: { sweden: 3, brazil: 3, colombia: 3, japan: 2, poland: 3, philippines: 2, thailand: 2, korea: 2, romania: 2 }, mixedScores: { brazil: 4, colombia: 3, thailand: 2, philippines: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "💼", label: "33–40", sub: "Established, calibrated, experienced", scores: { colombia: 3, philippines: 3, thailand: 3, brazil: 3, sweden: 3, japan: 2, poland: 3, korea: 2, romania: 2 }, mixedScores: { thailand: 4, philippines: 3, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "🏆", label: "40+", sub: "Seasoned — experience is the asset", scores: { philippines: 4, thailand: 4, colombia: 3, brazil: 3, japan: 2, sweden: 2, poland: 3, korea: 2, romania: 1 }, mixedScores: { philippines: 5, thailand: 3, brazil: 2, colombia: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "🎓", label: "18–25", sub: "College-age energy, unwritten", scores: { japan: 2, brazil: 3, colombia: 3, thailand: 2, philippines: 2, sweden: 2, korea: 2, poland: 2, romania: 3, vietnam: 4 }, mixedScores: { colombia: 4, brazil: 3, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: 4 } },
+      { icon: "📱", label: "26–32", sub: "Prime years — put together, ambitious", scores: { sweden: 3, brazil: 3, colombia: 3, japan: 2, poland: 3, philippines: 2, thailand: 2, korea: 2, romania: 2, vietnam: 4 }, mixedScores: { brazil: 4, colombia: 3, thailand: 2, philippines: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: 4 } },
+      { icon: "💼", label: "33–40", sub: "Established, calibrated, experienced", scores: { colombia: 3, philippines: 3, thailand: 3, brazil: 3, sweden: 3, japan: 2, poland: 3, korea: 2, romania: 2, vietnam: 0 }, mixedScores: { thailand: 4, philippines: 3, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: 0 } },
+      { icon: "🏆", label: "40+", sub: "Seasoned — experience is the asset", scores: { philippines: 4, thailand: 4, colombia: 3, brazil: 3, japan: 2, sweden: 2, poland: 3, korea: 2, romania: 1, vietnam: -2 }, mixedScores: { philippines: 5, thailand: 3, brazil: 2, colombia: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: -2 } },
     ]
   },
   {
@@ -766,10 +800,10 @@ const questions = [
     title: "What's your daily travel budget?",
     sub: "Capital determines which markets are accessible.",
     options: [
-      { icon: "💵", label: "Stretch it", sub: "$50–150/day — ROI-first mindset", scores: { philippines: 4, thailand: 4, colombia: 4, japan: 1, brazil: 3, sweden: 0, poland: 2, korea: 1, romania: 5 }, mixedScores: { thailand: 5, philippines: 4, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "💳", label: "Comfortable", sub: "$150–300/day — smart spending", scores: { japan: 2, colombia: 4, brazil: 3, sweden: 2, philippines: 3, thailand: 3, poland: 4, korea: 2, romania: 3 }, mixedScores: { thailand: 4, philippines: 4, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "🥩", label: "Generous", sub: "$300–500/day — live well, invest wisely", scores: { sweden: 4, japan: 4, brazil: 2, colombia: 3, philippines: 2, thailand: 2, poland: 2, korea: 2, romania: 0 }, mixedScores: { colombia: 5, brazil: 4, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "💎", label: "High Roller", sub: "$500+/day — money is the multiplier", scores: { sweden: 4, japan: 4, brazil: 2, colombia: 3, korea: 3, philippines: 2, thailand: 2, poland: 2, romania: 0 }, mixedScores: { colombia: 5, brazil: 4, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "💵", label: "Stretch it", sub: "$50–150/day — ROI-first mindset", scores: { philippines: 4, thailand: 4, colombia: 4, japan: 1, brazil: 3, sweden: 0, poland: 2, korea: 1, romania: 5, vietnam: 5 }, mixedScores: { thailand: 5, philippines: 4, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: 5 } },
+      { icon: "💳", label: "Comfortable", sub: "$150–300/day — smart spending", scores: { japan: 2, colombia: 4, brazil: 3, sweden: 2, philippines: 3, thailand: 3, poland: 4, korea: 2, romania: 3, vietnam: 4 }, mixedScores: { thailand: 4, philippines: 4, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: 4 } },
+      { icon: "🥩", label: "Generous", sub: "$300–500/day — live well, invest wisely", scores: { sweden: 4, japan: 4, brazil: 2, colombia: 3, philippines: 2, thailand: 2, poland: 2, korea: 2, romania: 0, vietnam: 0 }, mixedScores: { colombia: 5, brazil: 4, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: 0 } },
+      { icon: "💎", label: "High Roller", sub: "$500+/day — money is the multiplier", scores: { sweden: 4, japan: 4, brazil: 2, colombia: 3, korea: 3, philippines: 2, thailand: 2, poland: 2, romania: 0, vietnam: -2 }, mixedScores: { colombia: 5, brazil: 4, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1, vietnam: -2 } },
     ]
   }
 ];
@@ -934,21 +968,22 @@ function showResult(key, scores) {
         <div class="exchange-rate">${displayRate}</div>
         <div class="exchange-sub">ATT = Attraction Rating · ${pct}% profile match</div>
       </div>
-      <div class="result-desc">${p.desc}</div>
-      <div class="result-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-      <div class="result-cta">
-        <a href="https://www.passportpro.co/destination-match-quiz" class="btn-primary" target="_blank">🌍 Find Your Specific City →</a>
-        <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" class="btn-secondary" target="_blank">💬 Discord — $2.99/mo</a>
-        <div class="guide-gate">
-          <div class="guide-gate-label">📖 Get the free <strong style="color:var(--text)">Passport Pro Market Guide</strong> — which cities to target, which neighborhoods to know, and how to approach each market.</div>
-          <div class="guide-gate-row">
-            <input class="guide-email-input" id="guide-email" type="email" placeholder="your@email.com" />
-            <button class="btn-guide-submit" id="guide-btn" onclick="submitGuideEmail('${key}')">Send it →</button>
-          </div>
-          <div class="guide-download" id="guide-download">
-            <a class="btn-download" href="passport_pro_market_guide.pdf" download="Passport_Pro_Market_Guide.pdf">⬇ Download Your Market Guide</a>
-            <p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;border-top:1px solid rgba(240,165,0,0.15);padding-top:10px;">This guide names the markets. The <a href="https://www.passportpro.co" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:600;">Passport Pro City Guides</a> name the venues — specific spots, exact pricing, and district-by-district breakdowns. The <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:600;">Discord</a> has real-time field reports from guys on the ground.</p>
-          </div>
+      <div class="guide-gate">
+        <div class="guide-gate-label">🔒 <strong style="color:var(--text)">Your breakdown is locked.</strong> Drop your email to unlock the full market intel.</div>
+        <div class="guide-gate-row">
+          <input class="guide-email-input" id="guide-email" type="email" placeholder="your@email.com" />
+          <button class="btn-guide-submit" id="guide-btn" onclick="submitGuideEmail('${key}')">Unlock →</button>
+        </div>
+        <div class="guide-download" id="guide-download">
+          <a href="https://www.passportpro.co/destination-match-quiz" class="btn-primary" target="_blank">🌍 Match My City →</a>
+          <p style="font-size:14px;color:var(--text);margin-top:12px;line-height:1.6;border-top:1px solid rgba(240,165,0,0.15);padding-top:12px;font-weight:500;">The calculator named your market. Now <a href="https://www.passportpro.co/destination-match-quiz" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:700;">Match My City</a> finds the exact city to target.</p>
+        </div>
+      </div>
+      <div class="locked-blur" id="locked-blur">
+        <div class="result-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+        <div class="result-desc">${p.desc}</div>
+        <div class="result-cta">
+          <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" class="btn-secondary" target="_blank" style="border-color:rgba(88,101,242,0.5);color:#fff;font-size:15px;font-weight:700;padding:16px 24px;">🌍 Passport Pro Discord — $2.99/mo</a>
         </div>
       </div>
     </div>
@@ -996,8 +1031,10 @@ function submitGuideEmail(marketKey) {
       type: 'guide_download'
     })
   }).catch(() => {});
-  btn.textContent = '✓ Sent!';
+  btn.textContent = '✓ Unlocked!';
   document.getElementById('guide-download').style.display = 'block';
+  const lockedBlur = document.getElementById('locked-blur');
+  if (lockedBlur) lockedBlur.classList.add('unlocked');
 }
 
 function retake() {
@@ -1008,6 +1045,11 @@ function retake() {
 function sendHeight() {
   const h = document.body.scrollHeight;
   window.parent.postMessage({ iframeHeight: h }, '*');
+}
+
+// ── SERVICE WORKER REGISTRATION ────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
 
 // Use ResizeObserver for smooth continuous resizing
