@@ -928,13 +928,14 @@ function showResult(key, scores) {
         <a href="https://www.passportpro.co/destination-match-quiz" class="btn-primary" target="_blank">🌍 Find Your Specific City →</a>
         <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" class="btn-secondary" target="_blank">💬 Discord — $2.99/mo</a>
         <div class="guide-gate">
-          <div class="guide-gate-label">📖 Get the free <strong style="color:var(--text)">Passport Pro Market Guide</strong> — best cities, neighborhoods & tactics for ${m.city}.</div>
+          <div class="guide-gate-label">📖 Get the free <strong style="color:var(--text)">Passport Pro Market Guide</strong> — which cities to target, which neighborhoods to know, and how to approach each market.</div>
           <div class="guide-gate-row">
             <input class="guide-email-input" id="guide-email" type="email" placeholder="your@email.com" />
             <button class="btn-guide-submit" id="guide-btn" onclick="submitGuideEmail('${key}')">Send it →</button>
           </div>
           <div class="guide-download" id="guide-download">
             <a class="btn-download" href="passport_pro_market_guide.pdf" download="Passport_Pro_Market_Guide.pdf">⬇ Download Your Market Guide</a>
+            <p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;border-top:1px solid rgba(240,165,0,0.15);padding-top:10px;">This guide names the markets. The <a href="https://www.passportpro.co" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:600;">Passport Pro City Guides</a> name the venues — specific spots, exact pricing, and district-by-district breakdowns. The <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:600;">Discord</a> has real-time field reports from guys on the ground.</p>
           </div>
         </div>
       </div>
@@ -975,9 +976,12 @@ function submitGuideEmail(marketKey) {
     mode: 'no-cors',
     body: JSON.stringify({
       email: email,
-      market: markets[marketKey] ? markets[marketKey].city : marketKey,
-      type: 'guide_download',
-      timestamp: new Date().toISOString()
+      background: questions[0].options[answers[0]].label,
+      style:      questions[1].options[answers[1]].label,
+      age:        questions[2].options[answers[2]].label,
+      budget:     questions[3].options[answers[3]].label,
+      result:     markets[marketKey] ? markets[marketKey].city : marketKey,
+      type: 'guide_download'
     })
   }).catch(() => {});
   btn.textContent = '✓ Sent!';
