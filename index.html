@@ -451,13 +451,28 @@
   }
   .footer-note a { color: var(--gold); text-decoration: none; }
 
+  /* ── LOCKED BLUR ── */
+  .locked-blur {
+    filter: blur(5px);
+    pointer-events: none;
+    user-select: none;
+    transition: filter 0.5s ease;
+    margin-top: 20px;
+  }
+  .locked-blur.unlocked {
+    filter: none;
+    pointer-events: auto;
+    user-select: auto;
+  }
+
   /* ── GUIDE EMAIL GATE ── */
   .guide-gate {
-    margin-top: 12px;
+    margin-top: 20px;
+    margin-bottom: 0;
     background: var(--card2);
-    border: 1px solid var(--border);
+    border: 1px solid rgba(240,165,0,0.3);
     border-radius: 12px;
-    padding: 18px;
+    padding: 20px;
     text-align: center;
   }
   .guide-gate-label {
@@ -941,21 +956,22 @@ function showResult(key, scores) {
         <div class="exchange-rate">${displayRate}</div>
         <div class="exchange-sub">ATT = Attraction Rating · ${pct}% profile match</div>
       </div>
-      <div class="result-desc">${p.desc}</div>
-      <div class="result-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-      <div class="result-cta">
-        <a href="https://www.passportpro.co/destination-match-quiz" class="btn-primary" target="_blank">🌍 Find Your Specific City →</a>
-        <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" class="btn-secondary" target="_blank">💬 Discord — $2.99/mo</a>
-        <div class="guide-gate">
-          <div class="guide-gate-label">📖 Get the free <strong style="color:var(--text)">Passport Pro Market Guide</strong> — which cities to target, which neighborhoods to know, and how to approach each market.</div>
-          <div class="guide-gate-row">
-            <input class="guide-email-input" id="guide-email" type="email" placeholder="your@email.com" />
-            <button class="btn-guide-submit" id="guide-btn" onclick="submitGuideEmail('${key}')">Send it →</button>
-          </div>
-          <div class="guide-download" id="guide-download">
-            <a class="btn-download" href="passport_pro_market_guide.pdf" download="Passport_Pro_Market_Guide.pdf">⬇ Download Your Market Guide</a>
-            <p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;border-top:1px solid rgba(240,165,0,0.15);padding-top:10px;">This guide names the markets. The <a href="https://www.passportpro.co" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:600;">Passport Pro City Guides</a> name the venues — specific spots, exact pricing, and district-by-district breakdowns. The <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:600;">Discord</a> has real-time field reports from guys on the ground.</p>
-          </div>
+      <div class="guide-gate">
+        <div class="guide-gate-label">🔒 <strong style="color:var(--text)">Your breakdown is locked.</strong> Drop your email to unlock the full market intel.</div>
+        <div class="guide-gate-row">
+          <input class="guide-email-input" id="guide-email" type="email" placeholder="your@email.com" />
+          <button class="btn-guide-submit" id="guide-btn" onclick="submitGuideEmail('${key}')">Unlock →</button>
+        </div>
+        <div class="guide-download" id="guide-download">
+          <a href="https://www.passportpro.co/destination-match-quiz" class="btn-primary" target="_blank">🌍 Match My City →</a>
+          <p style="font-size:14px;color:var(--text);margin-top:12px;line-height:1.6;border-top:1px solid rgba(240,165,0,0.15);padding-top:12px;font-weight:500;">The calculator named your market. Now <a href="https://www.passportpro.co/destination-match-quiz" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:700;">Match My City</a> finds the exact city to target.</p>
+        </div>
+      </div>
+      <div class="locked-blur" id="locked-blur">
+        <div class="result-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+        <div class="result-desc">${p.desc}</div>
+        <div class="result-cta">
+          <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" class="btn-secondary" target="_blank" style="border-color:rgba(88,101,242,0.5);color:#fff;font-size:15px;font-weight:700;padding:16px 24px;">🌍 Passport Pro Discord — $2.99/mo</a>
         </div>
       </div>
     </div>
@@ -1003,8 +1019,10 @@ function submitGuideEmail(marketKey) {
       type: 'guide_download'
     })
   }).catch(() => {});
-  btn.textContent = '✓ Sent!';
+  btn.textContent = '✓ Unlocked!';
   document.getElementById('guide-download').style.display = 'block';
+  const lockedBlur = document.getElementById('locked-blur');
+  if (lockedBlur) lockedBlur.classList.add('unlocked');
 }
 
 function retake() {
