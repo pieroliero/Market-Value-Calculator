@@ -998,13 +998,18 @@ function sendHeight() {
   window.parent.postMessage({ iframeHeight: h }, '*');
 }
 
-// Send height on load and after any screen change
-window.addEventListener('load', sendHeight);
-const _origShowScreen = showScreen;
-showScreen = function(id) {
-  _origShowScreen(id);
-  setTimeout(sendHeight, 400);
-};
+// Use ResizeObserver for smooth continuous resizing
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(() => sendHeight());
+  ro.observe(document.body);
+} else {
+  window.addEventListener('load', sendHeight);
+  const _origShowScreen = showScreen;
+  showScreen = function(id) {
+    _origShowScreen(id);
+    setTimeout(sendHeight, 100);
+  };
+}
 </script>
 </body>
 </html>
