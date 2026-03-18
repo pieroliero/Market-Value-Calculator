@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Value Calculator™ | Passport Pro by PieroLiero</title>
+<meta property="og:title" content="Market Value Calculator™ | Passport Pro"/>
+<meta property="og:description" content="You're a 6 in LA. An 8 in Medellín. A 10 in Bangkok. Find your highest exchange rate."/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --gold: #f0a500;
+    --gold-dim: #c9841a;
+    --dark: #0d0d14;
+    --card: #13131f;
+    --card2: #1a1a2e;
+    --text: #f0ede8;
+    --muted: #888;
+    --border: rgba(240,165,0,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  /* ── WRAPPER ── */
+  .wrapper {
+    width: 100%;
+    max-width: 640px;
+    padding: 24px 16px;
+    position: relative;
+  }
+
+  /* ── BRAND HEADER ── */
+  .brand {
+    text-align: center;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeIn 0.6s 0.2s ease forwards;
+  }
+  .brand-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .brand-title {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+  .brand-title span { color: var(--gold); }
+  .brand-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* ── SCREEN ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── INTRO CARD ── */
+  .intro-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 32px;
+    text-align: center;
+    opacity: 0;
+    animation: slideUp 0.5s 0.3s ease forwards;
+  }
+  .intro-icon { font-size: 52px; margin-bottom: 20px; display: block; }
+  .intro-card h2 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .intro-card h2 span { color: var(--gold); }
+  .intro-card p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 28px;
+  }
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--gold);
+    display: block;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── QUESTION CARD ── */
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px 28px;
+  }
+
+  /* slide animations */
+  .slide-in-right {
+    animation: slideInRight 0.4s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  .slide-out-left {
+    animation: slideOutLeft 0.3s ease forwards;
+  }
+  .slide-in-left {
+    animation: slideInLeft 0.4s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+
+  .q-progress {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+  .q-dot {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    transition: background 0.3s;
+  }
+  .q-dot.done { background: var(--gold); }
+  .q-dot.active { background: var(--gold); opacity: 0.5; }
+
+  .q-step {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .q-title {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+  .q-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  /* Options */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    background: var(--card2);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-align: left;
+  }
+  .opt:hover {
+    border-color: var(--gold);
+    background: rgba(240,165,0,0.07);
+    transform: translateX(4px);
+  }
+  .opt.selected {
+    border-color: var(--gold);
+    background: rgba(240,165,0,0.12);
+  }
+  .opt-icon { font-size: 22px; flex-shrink: 0; }
+  .opt-label {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .opt-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* nav */
+  .q-nav {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .btn-back {
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 13px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .btn-back:hover { border-color: var(--muted); color: var(--text); }
+  .btn-next {
+    flex: 1;
+    background: var(--gold);
+    color: #000;
+    font-size: 15px;
+    font-weight: 800;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    letter-spacing: 0.3px;
+  }
+  .btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-next:not(:disabled):hover {
+    background: #ffbb1c;
+    transform: translateY(-1px);
+  }
+
+  /* ── CALCULATING ── */
+  #screen-calc {
+    text-align: center;
+    padding: 60px 20px;
+  }
+  .calc-spinner {
+    width: 64px; height: 64px;
+    border: 3px solid rgba(240,165,0,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 24px;
+  }
+  .calc-label {
+    font-size: 16px;
+    color: var(--muted);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+
+  /* ── RESULT ── */
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .result-top {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0d1020 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 28px 32px;
+    text-align: center;
+    position: relative;
+  }
+  .result-top::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(240,165,0,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .result-badge {
+    display: inline-block;
+    background: rgba(240,165,0,0.15);
+    border: 1px solid rgba(240,165,0,0.4);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  .result-flag { font-size: 56px; margin-bottom: 10px; display: block; }
+  .result-city {
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .result-country {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .result-premium {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: #000;
+    font-size: 15px;
+    font-weight: 800;
+    padding: 10px 22px;
+    border-radius: 30px;
+    letter-spacing: 0.3px;
+  }
+
+  .result-body { padding: 28px; }
+
+  .result-exchange {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 18px;
+    background: var(--card2);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  .exchange-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .exchange-rate {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .exchange-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .result-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #ccc;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .result-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .tag {
+    background: rgba(240,165,0,0.1);
+    border: 1px solid rgba(240,165,0,0.25);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  .result-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: #000;
+    font-size: 15px;
+    font-weight: 800;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 24px;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+  }
+  .btn-primary:hover { background: #ffbb1c; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 14px 24px;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-retake {
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.2s;
+    width: 100%;
+    text-align: center;
+  }
+  .btn-retake:hover { color: var(--text); }
+
+  .footer-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 24px;
+    opacity: 0;
+    animation: fadeIn 0.6s 0.5s ease forwards;
+  }
+  .footer-note a { color: var(--gold); text-decoration: none; }
+
+  /* ── GUIDE EMAIL GATE ── */
+  .guide-gate {
+    margin-top: 12px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+  }
+  .guide-gate-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .guide-gate-row {
+    display: flex;
+    gap: 8px;
+  }
+  .guide-email-input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .guide-email-input:focus { border-color: var(--gold); }
+  .guide-email-input::placeholder { color: var(--muted); }
+  .btn-guide-submit {
+    background: var(--gold);
+    color: #000;
+    font-size: 14px;
+    font-weight: 800;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-guide-submit:hover { background: #ffbb1c; }
+  .btn-guide-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .guide-download {
+    display: none;
+    margin-top: 10px;
+  }
+  .btn-download {
+    display: block;
+    width: 100%;
+    background: rgba(240,165,0,0.12);
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 13px 18px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .btn-download:hover { background: rgba(240,165,0,0.2); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes slideOutLeft { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(-40px); } }
+  @keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  @keyframes resultReveal { from { opacity: 0; transform: scale(0.95) translateY(16px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+  .result-reveal { animation: resultReveal 0.6s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+  /* start btn */
+  .btn-start {
+    background: var(--gold);
+    color: #000;
+    font-size: 16px;
+    font-weight: 800;
+    border: none;
+    border-radius: 12px;
+    padding: 17px 28px;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .btn-start:hover { background: #ffbb1c; transform: translateY(-2px); }
+
+  @media (max-width: 480px) {
+    .result-city { font-size: 30px; }
+    .intro-card { padding: 30px 20px; }
+    .question-card { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="brand">
+    <div class="brand-label">Passport Pro by PieroLiero</div>
+    <div class="brand-title">Market Value <span>Calculator™</span></div>
+    <div class="brand-sub">The Currency Exchange Rate of Attraction</div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div class="intro-card">
+      <span class="intro-icon">📈</span>
+      <h2>You're a 6 in LA.<br>A 10 in <span>Bangkok</span>.</h2>
+      <p>Same guy. Different market.<br>Answer 4 questions and we'll tell you exactly where your exchange rate goes through the roof.</p>
+      <div class="stats-row">
+        <div class="stat"><span class="stat-num">4</span><span class="stat-label">Questions</span></div>
+        <div class="stat"><span class="stat-num">9</span><span class="stat-label">Markets</span></div>
+        <div class="stat"><span class="stat-num">1</span><span class="stat-label">Best Play</span></div>
+      </div>
+      <button class="btn-start" onclick="startCalc()">Calculate My Market →</button>
+    </div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="screen" id="screen-question">
+    <div class="question-card" id="q-card">
+      <div class="q-progress" id="q-progress"></div>
+      <div class="q-step" id="q-step"></div>
+      <div class="q-title" id="q-title"></div>
+      <div class="q-sub" id="q-sub"></div>
+      <div class="options" id="q-options"></div>
+      <div class="q-nav">
+        <button class="btn-back" id="btn-back" onclick="prevQ()" style="display:none">← Back</button>
+        <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALCULATING -->
+  <div class="screen" id="screen-calc">
+    <div class="calc-spinner"></div>
+    <div class="calc-label" id="calc-label">Running the numbers...</div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="screen-result">
+    <div class="result-card result-reveal" id="result-card"></div>
+    <button class="btn-retake" onclick="retake()">↺ Retake the Calculator</button>
+  </div>
+
+  <div class="footer-note">By <a href="https://www.passportpro.co" target="_blank">PieroLiero</a> · Passport Pro™</div>
+
+</div>
+
+<script>
+// ── MARKETS ─────────────────────────────────────────────────────────
+// Background keys match Q1 option index: 0=white,1=black,2=latino,3=eastasian,4=southasian,5=mixed
+const BG = ['white','black','latino','eastasian','southasian','mixed'];
+
+const markets = {
+  japan: {
+    city: "Japan", flag: "🇯🇵", country: "East Asia",
+    premiums: {
+      white:     { label: "Gaijin Premium 📈",       rate: "+4.2 ATT", desc: "You walk in as something rare — exotic, aspirational, and structurally different from every other man in the room. The Gaijin Premium is real. Tall? Foreign? Confident? You're a top-tier option by default. Japan rewards presence, composure, and novelty — and you bring all three without trying. This is not a sleeper market. This is a cheat code.", tags: ["Gaijin Premium","Novelty Effect","Top-Tier Exotic","Soft Power Play"] },
+      black:     { label: "Dark Exotic Premium ✨",   rate: "+3.5 ATT", desc: "Japan's fascination with Western culture runs deep, and for a Black man, the novelty factor is off the charts. You're rare, you're aspirational, and you carry an energy that the market here genuinely responds to. The exchange rate isn't as loud as some markets — but it's real and consistent.", tags: ["Dark Exotic","Novelty Factor","Western Premium","Quiet ROI"] },
+      latino:    { label: "Latin Energy Export 🌶️",  rate: "+3.4 ATT", desc: "Japan loves passion, rhythm, and emotion — things Latinos carry naturally. You bring a warmth and expressiveness that stands out in a culture known for its reserve. The contrast is the whole play. Your energy is the exotic commodity here.", tags: ["Latin Export","Energy Premium","Contrast Play","Cultural Curiosity"] },
+      eastasian: { label: "Reverse Gaijin 🎌",        rate: "+2.8 ATT", desc: "Playing near home turf has a unique edge — you navigate the culture fluently, you understand the social codes, and you bring a polish that pure tourists can't fake. The reverse gaijin play is about competence premium: you're trusted, smooth, and calibrated in ways outsiders aren't.", tags: ["Cultural Fluency","Local Edge","Reverse Gaijin","Competence Premium"] },
+      southasian: { label: "Bollywood in Japan 🎬",   rate: "+3.1 ATT", desc: "Bollywood's reach is global and Japan is no exception. There's a quiet cultural appreciation for South Asian men here that most guys overlook entirely. The market is less saturated than you'd expect, and your profile stands out in a way that's genuinely interesting to the local demographic.", tags: ["Bollywood Exports","Quiet Demand","Underrated Edge","Cultural Curiosity"] },
+      mixed:     { label: "Global Gaijin 🌐",          rate: "+3.3 ATT", desc: "Mixed heritage in Japan is genuinely exotic — you're novel, you're visually interesting, and you don't fit any category they're used to. That ambiguity is your edge. The market here responds to anything rare, and you are by definition rare.", tags: ["Global Gaijin","Mixed Premium","Novelty Play","Visual Arbitrage"] },
+    }
+  },
+  brazil: {
+    city: "Brazil", flag: "🇧🇷", country: "Latin America",
+    premiums: {
+      white:     { label: "Gringo Premium 🌴",         rate: "+3.8 ATT", desc: "Brazil has a long, documented attraction to foreign men — and a white foreigner carries a specific prestige that plays consistently across São Paulo, Rio, and beyond. Your passport is a multiplier before you even open your mouth. The exchange rate here is strong and the market is deep.", tags: ["Gringo Premium","Passport Multiplier","Foreigner Dividend","Deep Market"] },
+      black:     { label: "African Diaspora Return 🌍", rate: "+4.0 ATT", desc: "Brazil has the largest Black population outside of Africa — and the cultural resonance you'll feel is immediate. There's a shared history, a shared aesthetic, and a genuine appreciation that goes beyond curiosity. This isn't novelty. This is homecoming energy, and the market responds accordingly.", tags: ["Diaspora Return","Cultural Resonance","Homecoming Premium","Authentic Connection"] },
+      latino:    { label: "Pan-Latin Play 🌶️",         rate: "+3.6 ATT", desc: "Pan-Latin solidarity is real and Brazil rewards it. You share a cultural frequency — the energy, the music, the way you move. You're familiar enough to connect instantly but different enough to be interesting. It's one of the most natural exchange rates on the board.", tags: ["Pan-Latin Premium","Cultural Frequency","Natural ROI","Shared Energy"] },
+      eastasian: { label: "Netflix Dividend 🎬",        rate: "+4.2 ATT", desc: "The Hallyu wave and decades of K-Drama exports have built you a market you never knew existed. Brazilian women are obsessed — and it's not a phase, it's a full cultural shift. You are what they've been watching on Netflix. Do not question it. Do not overthink it. Just go to São Paulo or Rio and let the exchange rate work for you.", tags: ["Netflix Dividend","Hallyu Premium","K-Drama Effect","Cultural Arbitrage"] },
+      southasian: { label: "Bollywood in Brazil 🎭",   rate: "+3.7 ATT", desc: "Bollywood's reach in Brazil is more significant than most people realize. There's a growing South Asian cultural presence in São Paulo, and Brazilian women's curiosity about South Asian men is a real and underreported phenomenon. Your exchange rate here is ascending — and ascending markets are where fortunes are made.", tags: ["Bollywood Brazil","Cultural Curiosity","Ascending Market","First-Mover Edge"] },
+      mixed:     { label: "Mixed Market King 👑",       rate: "+4.0 ATT", desc: "Brazil is arguably the most racially mixed country on earth — and mixed heritage men thrive in an environment where ambiguity is attractive, where your look is familiar enough to connect and different enough to intrigue. São Paulo and Rio are your optimal environments.", tags: ["Mixed Premium","Racial Fluidity","São Paulo Play","Visual Arbitrage"] },
+    }
+  },
+  sweden: {
+    city: "Sweden", flag: "🇸🇪", country: "Scandinavia",
+    premiums: {
+      white:     { label: "Nordic Familiar 🌨️",        rate: "+2.9 ATT", desc: "Sweden is one of the most internationally minded cultures in the world, and a well-traveled, confident white man plays well here — especially one with an interesting story and global experience. The market is competitive but the ceiling is high.", tags: ["Nordic Standard","Cultured Premium","Global Edge","Travel Dividend"] },
+      black:     { label: "Stockholm Premium 📈",       rate: "+4.5 ATT", desc: "In Stockholm, you are the most interesting man in the room — by default. The novelty premium in Scandinavia is off the charts, and here's what makes it real: they're not just curious. They're genuinely attracted. There is a difference. The Stockholm Premium hits different because it's not tokenism — it's genuine market demand meeting limited supply. The ROI here is one of the highest on the board.", tags: ["Stockholm Premium","Scarcity Play","Genuine Demand","Top-Tier Market"] },
+      latino:    { label: "Reggaeton Wave 🎵",           rate: "+3.6 ATT", desc: "Swedish nightlife has been completely taken over by Latin music — and the cultural fascination with Latino men has followed. You walk in and you're the living version of the music they've been dancing to. The passion, the rhythm, the way you carry yourself — it's exactly what this market is curious about.", tags: ["Reggaeton Premium","Music Dividend","Latin Mystique","Cultural Fascination"] },
+      eastasian: { label: "K-Wave Scandinavia 🎌",      rate: "+3.5 ATT", desc: "The Hallyu wave hit Scandinavia hard. K-Drama, K-pop, and Korean beauty culture have built a genuine appetite for East Asian men in Sweden that's still in early innings. The market is curious, the supply is low, and your exchange rate is ascending.", tags: ["K-Wave Nordic","Hallyu Export","Low Supply","Ascending Market"] },
+      southasian: { label: "Exotic Factor Sweden ✨",   rate: "+3.3 ATT", desc: "Sweden's progressive culture and genuine global curiosity create a strong premium for men who stand out visually and culturally. As a South Asian man, you're rare enough to be genuinely interesting here — and the market responds to that rarity with real demand.", tags: ["Exotic Factor","Rarity Premium","Progressive Market","Cultural Curiosity"] },
+      mixed:     { label: "Global Premium 🌐",           rate: "+3.4 ATT", desc: "Mixed heritage men in Sweden benefit from both the exotic premium and the cultural fluency premium simultaneously. You're interesting visually, you navigate cultures well, and you carry a global energy that Scandinavians find genuinely compelling.", tags: ["Global Premium","Mixed Edge","Dual Dividend","Scandinavian Curiosity"] },
+    }
+  },
+  philippines: {
+    city: "Philippines", flag: "🇵🇭", country: "Southeast Asia",
+    premiums: {
+      white:     { label: "Western Premium 🌍",         rate: "+4.0 ATT", desc: "Western men are warmly received in the Philippines — the cultural affinity with Western culture runs deep, the English is excellent, and the openness to foreign men is genuine. Your passport alone opens doors here. Add confidence and presence and the exchange rate climbs significantly.", tags: ["Western Premium","Passport Advantage","English Market","High Receptivity"] },
+      black:     { label: "American Dream Factor 🌟",   rate: "+3.8 ATT", desc: "The Philippines has a deep cultural connection with America and a genuine fascination with Black American culture — music, style, energy. You carry that cultural currency whether you intend to or not. The market here is receptive, warm, and the exchange rate is real.", tags: ["American Premium","Cultural Currency","Music Dividend","Warm Market"] },
+      latino:    { label: "Latin Warmth Play 🌶️",       rate: "+3.7 ATT", desc: "Filipinos and Latinos share more cultural DNA than most people realize — the warmth, the family orientation, the expressiveness. You'll feel at home immediately, and that natural chemistry translates directly into a strong exchange rate. This is one of the most natural fits on the board.", tags: ["Cultural Overlap","Latin Warmth","Natural Chemistry","Easy Market"] },
+      eastasian: { label: "Cultural Proximity Edge 🌏", rate: "+3.5 ATT", desc: "East Asian men carry a strong cultural premium in the Philippines — K-drama, Korean beauty culture, and Japanese media have built massive goodwill. There's also a natural cultural proximity that makes connection easier. Your exchange rate here is backed by decades of soft power.", tags: ["Cultural Proximity","K-Drama Effect","Soft Power","Regional Premium"] },
+      southasian: { label: "Bollywood Dividend 🎭",     rate: "+4.1 ATT", desc: "Bollywood has been building cultural goodwill in the Philippines for 40 years — quietly, without a press release. You walk in with four decades of positive association already banked. They've been watching your cinema, your music, your culture. Netflix put the K-Drama guy on the map last year. Bollywood did it decades ago. Your exchange rate is underrated — and underrated markets are where the real money is made.", tags: ["Bollywood Dividend","40-Year Compound","Underrated Market","First-Mover Edge"] },
+      mixed:     { label: "Global Appeal 🌐",            rate: "+3.8 ATT", desc: "Mixed heritage men thrive in the Philippines — a culture that itself is beautifully mixed and responds positively to ambiguity. You're visually interesting, culturally fluid, and carry a global energy that plays extremely well here. One of the most receptive markets for mixed men globally.", tags: ["Global Appeal","Mixed Premium","Cultural Fluidity","Natural Fit"] },
+    }
+  },
+  poland: {
+    city: "Eastern Europe", flag: "🇵🇱", country: "Slavic Gold Rush",
+    premiums: {
+      white:     { label: "Euro Familiar 🏰",           rate: "+3.0 ATT", desc: "You're playing in a competitive but rewarding market. Eastern Europe rewards men who are well-dressed, direct, and carry themselves with purpose. The standards are high and so is the ceiling. Your edge here is confidence and intentionality — be the version of yourself that has his act together.", tags: ["Euro Market","Confidence Premium","High Standard","Purpose Dividend"] },
+      black:     { label: "Eastern Exotic ✨",           rate: "+3.8 ATT", desc: "Eastern Europe still has a genuine novelty premium for Black men — the market hasn't been saturated, the curiosity is real, and the exchange rate reflects genuine scarcity. Warsaw, Prague, Budapest — these cities reward you with an attention level that's hard to find in more diverse Western cities.", tags: ["Eastern Exotic","Scarcity Premium","Novelty Edge","Unsaturated Market"] },
+      latino:    { label: "Warsaw Premium 🏰",           rate: "+3.9 ATT", desc: "They've been told for decades that the most romantic man alive is a passionate Latin lover. You walk in and you ARE the movie. No competition. No other version of you in that market. The bonus: reggaeton and salsa have taken over Eastern European nightlife. You already know the music. You already know how to move. They are just now learning. You're a professor in a city full of eager students.", tags: ["Warsaw Premium","Latin Lover Effect","Zero Competition","Cultural Professor"] },
+      eastasian: { label: "Eastern Curiosity 🎌",        rate: "+3.3 ATT", desc: "Eastern Europe is developing a genuine fascination with East Asian culture — K-drama, anime, and Korean beauty have all been landing hard here. You're ahead of the curve in a market that's just starting to discover what you bring. First mover advantage is real.", tags: ["Eastern Curiosity","K-Wave Export","First Mover","Ascending Market"] },
+      southasian: { label: "Exotic Premium EE ✨",       rate: "+3.1 ATT", desc: "South Asian men in Eastern Europe carry a genuine novelty premium — the market hasn't been saturated, the curiosity is real, and your profile stands out in every room. The exchange rate is driven by scarcity and genuine interest.", tags: ["Exotic Premium","Novelty Factor","Low Saturation","Real Demand"] },
+      mixed:     { label: "Global Factor 🌐",            rate: "+3.2 ATT", desc: "Mixed heritage men in Eastern Europe benefit from being genuinely unclassifiable — you don't fit any box, and that makes you interesting. The market here is curious about the world and you represent the world in a way that resonates.", tags: ["Global Factor","Mixed Edge","Visual Arbitrage","Cultural Curiosity"] },
+    }
+  },
+  colombia: {
+    city: "Colombia", flag: "🇨🇴", country: "Latin America",
+    premiums: {
+      white:     { label: "Gringo Premium 🌺",          rate: "+3.9 ATT", desc: "Colombia is one of the most consistent markets for Western men on the board. Medellín, Bogotá, Cartagena — across all three, the exchange rate for a confident, well-dressed foreign man is strong and reliable. Your passport is respected, your presence is interesting, and the depth of market is unmatched in LATAM.", tags: ["Gringo Premium","Consistent ROI","Deep Market","LATAM Leader"] },
+      black:     { label: "Afro-Latin Connection 🌍",   rate: "+3.7 ATT", desc: "Colombia has a deep Afro-Colombian culture — especially in Cartagena and the Caribbean coast. As a Black man, you carry a cultural resonance here that goes beyond novelty. The connection is real, the warmth is genuine, and the exchange rate reflects authentic demand.", tags: ["Afro-Latin Bond","Cultural Resonance","Caribbean Premium","Authentic Market"] },
+      latino:    { label: "Pan-Latin Premium 🌶️",       rate: "+3.8 ATT", desc: "Pan-Latin solidarity runs deep in Colombia. You share the energy, the music, the cadence — and that familiarity is your edge. You'll move through these cities like you belong, because culturally, you do. The exchange rate for a Latino man in Colombia is consistently strong.", tags: ["Pan-Latin Premium","Cultural Fluency","Natural Chemistry","High ROI"] },
+      eastasian: { label: "K-Drama Colombia 🎬",         rate: "+3.6 ATT", desc: "K-drama and K-pop have taken Colombia by storm. East Asian men are a genuinely desired demographic in Medellín and Bogotá right now — the cultural curiosity is high and the supply is low. You're operating in a market where demand is growing and competition hasn't caught up yet.", tags: ["K-Drama Premium","Growing Demand","Low Supply","Ascending Market"] },
+      southasian: { label: "Bollywood Meets LATAM 🎭",  rate: "+3.5 ATT", desc: "The cultural curiosity about South Asian men in Colombia is real and growing. Bollywood's global reach has planted seeds here, and your profile — the look, the culture, the background — is genuinely novel and interesting to the Colombian market.", tags: ["Bollywood Export","Cultural Curiosity","Growing Demand","Novel Profile"] },
+      mixed:     { label: "Medellín Premium 🌺",         rate: "+4.0 ATT", desc: "Mixed heritage men thrive in Colombia — a country that itself celebrates racial mixing and finds ambiguity genuinely attractive. Medellín especially rewards men who look interesting, carry themselves well, and bring a global energy. This is one of the strongest markets for mixed men anywhere.", tags: ["Medellín Premium","Mixed Advantage","Global Energy","Top LATAM Market"] },
+    }
+  },
+  thailand: {
+    city: "Thailand", flag: "🇹🇭", country: "Southeast Asia",
+    premiums: {
+      white:     { label: "Farang Premium 🌃",          rate: "+4.0 ATT", desc: "The Farang premium in Thailand is well-documented and consistently strong. Western men carry a specific prestige here — economically, culturally, and physically. Bangkok and beyond reward you with an exchange rate that's difficult to replicate elsewhere. The infrastructure is unmatched and your profile plays at the top of the market.", tags: ["Farang Premium","Western Prestige","Infrastructure Play","Consistent ROI"] },
+      black:     { label: "Dark Exotic Thailand ✨",    rate: "+3.7 ATT", desc: "Thailand's fascination with Western culture extends to Black men with a genuine intensity. You're rare, you're visually striking, and you carry a cultural energy that stands out completely in the Thai market. Bangkok in particular rewards you with an attention premium that's hard to find elsewhere in Asia.", tags: ["Dark Exotic","Western Premium","Attention Factor","Bangkok Edge"] },
+      latino:    { label: "Latin Energy Bangkok 🌶️",   rate: "+3.6 ATT", desc: "Your passion, your presence, your way of moving — these are exotic commodities in Bangkok. Thai culture rewards warmth and expressiveness, and Latinos carry both naturally. The exchange rate here is strong for a man who moves with energy and intention.", tags: ["Latin Energy","Passion Premium","Bangkok Play","Exotic Commodity"] },
+      eastasian: { label: "Bangkok Play 🌃",            rate: "+3.7 ATT", desc: "Bangkok is one of the most organized adult cities on earth. Every lane is mapped. The nightlife infrastructure is unmatched globally. East Asian men navigate this market with a unique advantage — cultural proximity plus the K-drama premium that's been building across Southeast Asia.", tags: ["Bangkok Play","Infrastructure Premium","Cultural Edge","Market Depth"] },
+      southasian: { label: "South Asian Bangkok 🌟",   rate: "+3.5 ATT", desc: "South Asian men in Bangkok carry both the Western-adjacent premium and the Bollywood cultural awareness that's been building in Thailand for decades. The market here is deep, the infrastructure is excellent, and your profile plays well across the full spectrum of options available.", tags: ["South Asian Edge","Bollywood Awareness","Market Depth","Infrastructure Play"] },
+      mixed:     { label: "Global Bangkok 🌐",          rate: "+3.8 ATT", desc: "Mixed heritage men thrive in Bangkok — a city that has seen every type of visitor and still manages to find genuine novelty in ambiguity. Your profile is interesting, your look is rare, and the market infrastructure ensures the exchange rate translates into real ROI.", tags: ["Global Premium","Mixed Edge","Bangkok Depth","Visual Arbitrage"] },
+    }
+  },
+  korea: {
+    city: "South Korea", flag: "🇰🇷", country: "East Asia",
+    premiums: {
+      white:     { label: "Seoul Gaijin Premium 🏙️",   rate: "+3.8 ATT", desc: "Seoul rewards foreign men who are well-dressed, composed, and carry themselves with confidence. The Western foreigner premium here is real — you're exotic, you're aspirational, and Korean women's curiosity about Western men has only grown with globalization.", tags: ["Seoul Gaijin","Western Premium","Exotic Factor","Globalization Dividend"] },
+      black:     { label: "Seoul Exotic Edge ✨",        rate: "+3.5 ATT", desc: "Black men in Seoul carry a genuine novelty premium — K-hip-hop culture has built real cultural appreciation for Black men, and the market is more receptive than you'd expect. The exchange rate is real and the city is one of the safest and most livable on earth.", tags: ["Seoul Exotic","Hip-Hop Dividend","Novelty Factor","Safety Premium"] },
+      latino:    { label: "Seoul Latin Wave 🌶️",        rate: "+3.4 ATT", desc: "K-drama fans and Latinos share more cultural overlap than anyone expected — the passion, the emotion, the family drama. You carry an energy that Korean women find genuinely fascinating. Seoul is increasingly globalized and the curiosity about Latino culture is real and growing.", tags: ["Latin Wave","Cultural Curiosity","Growing Demand","Seoul Premium"] },
+      eastasian: { label: "Seoul Standard 🏙️",          rate: "+3.5 ATT", desc: "Seoul rewards style, composure, and confidence above raw looks. The dating culture here is structured and the city is world-class. Your profile fits the Seoul demographic well — and as one of the safest, most livable cities on earth, the quality of life ROI stacks on top of the attraction ROI.", tags: ["Seoul Standard","Style Premium","Safety Dividend","World-Class City"] },
+      southasian: { label: "Bollywood Seoul 🎭",         rate: "+3.1 ATT", desc: "Korean women's global curiosity extends to South Asian men more than most people realize. Bollywood's reach is global, and Seoul's increasingly international population means your profile is genuinely interesting here. The market is less saturated than you'd expect.", tags: ["Bollywood Export","Growing Curiosity","Low Saturation","Seoul Edge"] },
+      mixed:     { label: "Global Seoul 🌐",              rate: "+3.3 ATT", desc: "Seoul is increasingly cosmopolitan, and mixed heritage men occupy a unique and interesting space in a city that's globally curious but still relatively homogeneous. Your ambiguity is your premium — you're rare, you're interesting, and Seoul rewards what's rare.", tags: ["Global Seoul","Mixed Premium","Scarcity Play","Cosmopolitan Edge"] },
+    }
+  },
+  romania: {
+    city: "Romania", flag: "🇷🇴", country: "Romanian Arbitrage",
+    premiums: {
+      white:     { label: "Budget Euro Play 🏰",         rate: "+2.8 ATT", desc: "Bucharest is one of the last truly affordable European capitals — and for a Western man on a tight budget, that's the whole play. The women are beautiful, the nightlife is real, and you can run this market properly without burning through your cash. It's a lean operation with a solid return.", tags: ["Budget Europe","Affordable Capital","Lean ROI","Bucharest Play"] },
+      black:     { label: "Bucharest Exotic ✨",          rate: "+3.5 ATT", desc: "Romania hasn't been saturated the way Western Europe has — and for a Black man, that means the novelty premium is still very much alive. Bucharest is genuinely curious and the exchange rate reflects real scarcity. Budget-friendly city, real exotic bonus.", tags: ["Bucharest Exotic","Scarcity Premium","Budget Market","Novelty Edge"] },
+      latino:    { label: "Bucharest Bonus 🌶️",          rate: "+4.1 ATT", desc: "Romania is still in the early stages of discovering the Latin lover myth — and you get to be the living proof. Bucharest women have absorbed the telenovela, the salsa, the whole narrative, and almost none of them have ever actually met a Latino man. You walk in and the exchange rate goes vertical. Best of all: you can run this market on a shoestring. Low cost. High return. Maximum arbitrage.", tags: ["Bucharest Bonus","Latin Lover Myth","Maximum Arbitrage","Budget King"] },
+      eastasian: { label: "Bucharest Curiosity 🎌",      rate: "+3.0 ATT", desc: "K-drama and Korean beauty are landing in Romania the same way they hit every other Eastern European market — and Bucharest is starting to develop genuine curiosity about East Asian men. The market is early. The budget is low. The first-mover advantage is yours to take.", tags: ["Early Market","K-Wave Export","First Mover","Budget Edge"] },
+      southasian: { label: "Exotic Budget Play 🌟",      rate: "+2.9 ATT", desc: "Romania is one of the most affordable European markets and for a South Asian man looking to leverage novelty without spending big, Bucharest delivers. The curiosity is real, the cost of living is low, and your profile stands out in every room.", tags: ["Budget Play","Novelty Factor","Affordable Europe","Stand Out Premium"] },
+      mixed:     { label: "Bucharest Wildcard 🌐",        rate: "+3.1 ATT", desc: "Mixed heritage men in Bucharest carry the same unclassifiable energy that works across Eastern Europe — but at a fraction of the cost. The women are curious, the city is vibrant, and the exchange rate rewards anyone who looks interesting and moves with purpose.", tags: ["Bucharest Wildcard","Mixed Edge","Budget Arbitrage","Visual Premium"] },
+    }
+  }
+};
+
+// ── QUESTIONS ────────────────────────────────────────────────────────
+const questions = [
+  {
+    step: "Factor 01 — Background",
+    title: "What's your ethnic background?",
+    sub: "The algorithm is neutral. Your background determines your baseline exchange rate.",
+    options: [
+      { icon: "🌍", label: "White / European", sub: "Irish, Italian, German, Polish, etc.", scores: { japan: 4, korea: 4, thailand: 3, philippines: 4, colombia: 2, sweden: 1, brazil: 4, poland: 2, romania: 1 } },
+      { icon: "✊🏿", label: "Black / African American", sub: "Sub-Saharan African ancestry", scores: { sweden: 4, brazil: 3, colombia: 4, japan: 2, thailand: 2, philippines: 2, poland: 4, korea: 1, romania: 1 } },
+      { icon: "🌶️", label: "Hispanic / Latino", sub: "Mexican, Colombian, Puerto Rican, etc.", scores: { poland: 5, sweden: 4, philippines: 3, colombia: 2, brazil: 2, japan: 2, thailand: 2, korea: 2, romania: 4 } },
+      { icon: "🎌", label: "East Asian", sub: "Chinese, Japanese, Korean, Filipino, etc.", scores: { brazil: 5, colombia: 4, sweden: 3, poland: 3, philippines: 2, japan: 1, thailand: 3, korea: 2, romania: 1 } },
+      { icon: "🎬", label: "South Asian / Indian", sub: "Indian, Pakistani, Bangladeshi, Sri Lankan, etc.", scores: { philippines: 4, colombia: 4, brazil: 2, thailand: 6, sweden: 2, poland: 2, japan: 2, korea: 1, romania: 1 } },
+      { icon: "🌐", label: "Mixed / Other", sub: "Mixed heritage or other background", scores: { colombia: 3, brazil: 3, thailand: 3, philippines: 3, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+    ]
+  },
+  {
+    step: "Factor 02 — Style",
+    title: "How would you describe your style?",
+    sub: "Presentation multiplies your base rate.",
+    options: [
+      { icon: "✨", label: "Clean & polished", sub: "K-Drama energy — structured, groomed, intentional", scores: { brazil: 3, colombia: 3, sweden: 2, poland: 3, japan: 3, philippines: 2, korea: 3, thailand: 2, romania: 1 }, mixedScores: { brazil: 5, philippines: 4, colombia: 2, thailand: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "🔥", label: "Streetwear / urban", sub: "Modern, confident, edge", scores: { sweden: 3, brazil: 2, colombia: 4, japan: 2, philippines: 2, korea: 2, thailand: 2, poland: 2, romania: 2 }, mixedScores: { colombia: 5, brazil: 3, philippines: 2, thailand: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "👔", label: "Classic / business casual", sub: "Button-ups, dress shoes, clean cuts", scores: { japan: 3, sweden: 2, colombia: 2, brazil: 2, philippines: 3, thailand: 2, korea: 2, poland: 3, romania: 1 }, mixedScores: { colombia: 5, brazil: 4, philippines: 2, thailand: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "💪", label: "Athletic / gym-forward", sub: "Fit physique, activewear, fitness lifestyle", scores: { brazil: 3, colombia: 3, thailand: 3, philippines: 2, sweden: 2, japan: 2, poland: 3, korea: 2, romania: 2 }, mixedScores: { brazil: 5, colombia: 3, philippines: 3, thailand: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "😎", label: "Relaxed / low-effort", sub: "T-shirts, comfortable, unbothered", scores: { thailand: 4, philippines: 3, brazil: 2, colombia: 4, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 3 }, mixedScores: { thailand: 5, philippines: 4, colombia: 2, brazil: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+    ]
+  },
+  {
+    step: "Factor 03 — Age",
+    title: "What's your age range?",
+    sub: "Different markets peak at different stages.",
+    options: [
+      { icon: "🎓", label: "18–25", sub: "College-age energy, unwritten", scores: { japan: 2, brazil: 3, colombia: 3, thailand: 2, philippines: 2, sweden: 2, korea: 2, poland: 2, romania: 3 }, mixedScores: { colombia: 4, brazil: 3, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "📱", label: "26–32", sub: "Prime years — put together, ambitious", scores: { sweden: 3, brazil: 3, colombia: 3, japan: 2, poland: 3, philippines: 2, thailand: 2, korea: 2, romania: 2 }, mixedScores: { brazil: 4, colombia: 3, thailand: 2, philippines: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "💼", label: "33–40", sub: "Established, calibrated, experienced", scores: { colombia: 3, philippines: 3, thailand: 3, brazil: 3, sweden: 3, japan: 2, poland: 3, korea: 2, romania: 2 }, mixedScores: { thailand: 4, philippines: 3, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "🏆", label: "40+", sub: "Seasoned — experience is the asset", scores: { philippines: 4, thailand: 4, colombia: 3, brazil: 3, japan: 2, sweden: 2, poland: 3, korea: 2, romania: 1 }, mixedScores: { philippines: 5, thailand: 3, brazil: 2, colombia: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+    ]
+  },
+  {
+    step: "Factor 04 — Budget",
+    title: "What's your daily travel budget?",
+    sub: "Capital determines which markets are accessible.",
+    options: [
+      { icon: "💵", label: "Stretch it", sub: "$50–150/day — ROI-first mindset", scores: { philippines: 4, thailand: 4, colombia: 4, japan: 1, brazil: 3, sweden: 0, poland: 2, korea: 1, romania: 5 }, mixedScores: { thailand: 5, philippines: 4, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "💳", label: "Comfortable", sub: "$150–300/day — smart spending", scores: { japan: 2, colombia: 4, brazil: 3, sweden: 2, philippines: 3, thailand: 3, poland: 4, korea: 2, romania: 0 }, mixedScores: { thailand: 4, philippines: 4, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "🥩", label: "Generous", sub: "$300–500/day — live well, invest wisely", scores: { sweden: 4, japan: 4, brazil: 2, colombia: 3, philippines: 2, thailand: 2, poland: 2, korea: 2, romania: 0 }, mixedScores: { colombia: 5, brazil: 4, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "💎", label: "High Roller", sub: "$500+/day — money is the multiplier", scores: { sweden: 4, japan: 4, brazil: 2, colombia: 3, korea: 3, philippines: 2, thailand: 2, poland: 2, romania: 0 }, mixedScores: { colombia: 5, brazil: 4, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+    ]
+  }
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let currentQ = 0;
+let answers = [];
+let selectedOpt = null;
+
+// ── SCREENS ───────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── START ─────────────────────────────────────────────────────────────
+function startCalc() {
+  currentQ = 0;
+  answers = [];
+  selectedOpt = null;
+  showScreen('screen-question');
+  renderQ();
+}
+
+// ── RENDER QUESTION ───────────────────────────────────────────────────
+function renderQ(direction = 'right') {
+  const q = questions[currentQ];
+  const card = document.getElementById('q-card');
+
+  // progress dots
+  const progress = document.getElementById('q-progress');
+  progress.innerHTML = questions.map((_, i) => {
+    let cls = i < currentQ ? 'q-dot done' : i === currentQ ? 'q-dot active' : 'q-dot';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  document.getElementById('q-step').textContent = q.step;
+  document.getElementById('q-title').textContent = q.title;
+  document.getElementById('q-sub').textContent = q.sub;
+
+  // options
+  const container = document.getElementById('q-options');
+  container.innerHTML = q.options.map((opt, i) => `
+    <div class="opt ${answers[currentQ] === i ? 'selected' : ''}" onclick="selectOpt(${i})">
+      <span class="opt-icon">${opt.icon}</span>
+      <div>
+        <div class="opt-label">${opt.label}</div>
+        <div class="opt-sub">${opt.sub}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // nav
+  document.getElementById('btn-back').style.display = currentQ > 0 ? 'block' : 'none';
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.disabled = answers[currentQ] === undefined;
+  nextBtn.textContent = currentQ === questions.length - 1 ? 'Calculate My Market →' : 'Continue →';
+
+  // animate
+  card.classList.remove('slide-in-right', 'slide-in-left', 'slide-out-left');
+  void card.offsetWidth;
+  card.classList.add(direction === 'right' ? 'slide-in-right' : 'slide-in-left');
+}
+
+function selectOpt(i) {
+  answers[currentQ] = i;
+  document.querySelectorAll('.opt').forEach((el, idx) => {
+    el.classList.toggle('selected', idx === i);
+  });
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQ() {
+  if (answers[currentQ] === undefined) return;
+  if (currentQ < questions.length - 1) {
+    currentQ++;
+    renderQ('right');
+  } else {
+    calculate();
+  }
+}
+
+function prevQ() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQ('left');
+  }
+}
+
+// ── CALCULATE ─────────────────────────────────────────────────────────
+function calculate() {
+  showScreen('screen-calc');
+
+  const labels = ["Running the numbers...", "Checking market conditions...", "Calculating your exchange rate...", "Almost there..."];
+  let i = 0;
+  const lbl = document.getElementById('calc-label');
+  const interval = setInterval(() => {
+    i++;
+    if (i < labels.length) lbl.textContent = labels[i];
+  }, 500);
+
+  setTimeout(() => {
+    clearInterval(interval);
+
+    // tally scores
+    const scores = {};
+    Object.keys(markets).forEach(k => scores[k] = 0);
+
+    const isMixed = BG[answers[0]] === 'mixed';
+    answers.forEach((ansIdx, qIdx) => {
+      const opt = questions[qIdx].options[ansIdx];
+      const s = (isMixed && qIdx > 0 && opt.mixedScores) ? opt.mixedScores : opt.scores;
+      Object.entries(s).forEach(([market, pts]) => {
+        if (scores[market] !== undefined) scores[market] += pts;
+      });
+    });
+
+    // find winner
+    const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+    showResult(winner, scores);
+  }, 2200);
+}
+
+// ── ATT RATE MODIFIER ─────────────────────────────────────────────────
+// Adjusts the displayed exchange rate based on style, age, and budget.
+// High-effort + generous profiles keep the full rate; low-effort + budget profiles get a realistic reduction.
+function computeDisplayRate(baseRate, styleIdx, ageIdx, budgetIdx) {
+  const match = baseRate.match(/([+-]?\d+\.?\d*)/);
+  if (!match) return baseRate;
+  let val = parseFloat(match[1]);
+  // Penalties for low-effort / budget profiles
+  if (styleIdx === 4) val -= 0.5;   // relaxed / low-effort
+  if (budgetIdx === 0) val -= 0.4;  // stretch it
+  if (ageIdx === 0)    val -= 0.3;  // 18–25
+  // Small boost for premium profiles
+  if (budgetIdx >= 2)  val += 0.2;  // generous or high roller
+  if (styleIdx === 0 || styleIdx === 2) val += 0.1; // polished or business casual
+  val = Math.max(1.5, Math.min(5.0, val));
+  return '+' + val.toFixed(1) + ' ATT';
+}
+
+// ── SHOW RESULT ───────────────────────────────────────────────────────
+function showResult(key, scores) {
+  const m = markets[key];
+  const bgKey = BG[answers[0]] || 'mixed';
+  const p = m.premiums[bgKey] || m.premiums['mixed'];
+  const maxScore = Math.max(...Object.values(scores));
+  const pct = Math.round((maxScore / (questions.length * 5)) * 100);
+  const displayRate = computeDisplayRate(p.rate, answers[1], answers[2], answers[3]);
+
+  document.getElementById('result-card').innerHTML = `
+    <div class="result-top">
+      <div class="result-badge">Your Highest Market</div>
+      <span class="result-flag">${m.flag}</span>
+      <div class="result-city">${m.city}</div>
+      <div class="result-country">${m.country}</div>
+      <div class="result-premium">${p.label}</div>
+    </div>
+    <div class="result-body">
+      <div class="result-exchange">
+        <div class="exchange-label">Your Attraction Rate</div>
+        <div class="exchange-rate">${displayRate}</div>
+        <div class="exchange-sub">ATT = Attraction Rating · ${pct}% profile match</div>
+      </div>
+      <div class="result-desc">${p.desc}</div>
+      <div class="result-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      <div class="result-cta">
+        <a href="https://www.passportpro.co/destination-match-quiz" class="btn-primary" target="_blank">🌍 Find Your Specific City →</a>
+        <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" class="btn-secondary" target="_blank">💬 Discord — $2.99/mo</a>
+        <div class="guide-gate">
+          <div class="guide-gate-label">📖 Get the free <strong style="color:var(--text)">Passport Pro Market Guide</strong> — best cities, neighborhoods & tactics for ${m.city}.</div>
+          <div class="guide-gate-row">
+            <input class="guide-email-input" id="guide-email" type="email" placeholder="your@email.com" />
+            <button class="btn-guide-submit" id="guide-btn" onclick="submitGuideEmail('${key}')">Send it →</button>
+          </div>
+          <div class="guide-download" id="guide-download">
+            <a class="btn-download" href="passport_pro_market_guide.pdf" download="Passport_Pro_Market_Guide.pdf">⬇ Download Your Market Guide</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  showScreen('screen-result');
+
+  // ── SILENT DATA LOGGER ──────────────────────────────────────────────
+  try {
+    fetch('https://script.google.com/macros/s/AKfycbyh4qiZ2JrfUtgHC2BHgRyG-463XVt85YeviRsgDe4dp0aTXJoH2QRJmtlHrvV8NRB9/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({
+        background: questions[0].options[answers[0]].label,
+        style:      questions[1].options[answers[1]].label,
+        age:        questions[2].options[answers[2]].label,
+        budget:     questions[3].options[answers[3]].label,
+        result:     markets[key].city
+      })
+    });
+  } catch(err) {}
+}
+
+function submitGuideEmail(marketKey) {
+  const input = document.getElementById('guide-email');
+  const btn = document.getElementById('guide-btn');
+  const email = input.value.trim();
+  if (!email || !email.includes('@')) {
+    input.style.borderColor = '#e74c3c';
+    input.placeholder = 'Enter a valid email';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  fetch('https://script.google.com/macros/s/AKfycbyh4qiZ2JrfUtgHC2BHgRyG-463XVt85YeviRsgDe4dp0aTXJoH2QRJmtlHrvV8NRB9/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    body: JSON.stringify({
+      email: email,
+      background: questions[0].options[answers[0]].label,
+      style:      questions[1].options[answers[1]].label,
+      age:        questions[2].options[answers[2]].label,
+      budget:     questions[3].options[answers[3]].label,
+      result:     markets[marketKey] ? markets[marketKey].city : marketKey,
+      type: 'guide_download'
+    })
+  }).catch(() => {});
+  btn.textContent = '✓ Sent!';
+  document.getElementById('guide-download').style.display = 'block';
+}
+
+function retake() {
+  showScreen('screen-intro');
+}
+</script>
+</body>
+</html>
