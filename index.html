@@ -12,9 +12,9 @@
   :root {
     --gold: #f0a500;
     --gold-dim: #c9841a;
-    --dark: #0d0d14;
-    --card: #13131f;
-    --card2: #1a1a2e;
+    --dark: #080808;
+    --card: #1e1e1e;
+    --card2: #1a1a1a;
     --text: #f0ede8;
     --muted: #888;
     --border: rgba(240,165,0,0.2);
@@ -273,7 +273,7 @@
   }
 
   .result-top {
-    background: linear-gradient(135deg, #1a1a2e 0%, #0d1020 100%);
+    background: linear-gradient(135deg, #1a1a1a 0%, #111111 100%);
     border-bottom: 1px solid var(--border);
     padding: 36px 28px 32px;
     text-align: center;
@@ -608,8 +608,8 @@
 
 <script>
 // ── MARKETS ─────────────────────────────────────────────────────────
-// Background keys match Q1 option index: 0=white,1=black,2=latino,3=eastasian,4=southasian,5=mixed
-const BG = ['white','black','latino','eastasian','southasian','mixed'];
+// Background keys match Q1 option index: 0=white,1=black,2=latino,3=eastasian,4=southasian,5=middleeastern,6=mixed
+const BG = ['white','black','latino','eastasian','southasian','middleeastern','mixed'];
 
 const markets = {
   japan: {
@@ -621,6 +621,7 @@ const markets = {
       eastasian: { label: "Reverse Gaijin 🎌",        rate: "+2.8 ATT", desc: "Playing near home turf has a unique edge — you navigate the culture fluently, you understand the social codes, and you bring a polish that pure tourists can't fake. The reverse gaijin play is about competence premium: you're trusted, smooth, and calibrated in ways outsiders aren't.", tags: ["Cultural Fluency","Local Edge","Reverse Gaijin","Competence Premium"] },
       southasian: { label: "Bollywood in Japan 🎬",   rate: "+3.1 ATT", desc: "Bollywood's reach is global and Japan is no exception. There's a quiet cultural appreciation for South Asian men here that most guys overlook entirely. The market is less saturated than you'd expect, and your profile stands out in a way that's genuinely interesting to the local demographic.", tags: ["Bollywood Exports","Quiet Demand","Underrated Edge","Cultural Curiosity"] },
       mixed:     { label: "Global Gaijin 🌐",          rate: "+3.3 ATT", desc: "Mixed heritage in Japan is genuinely exotic — you're novel, you're visually interesting, and you don't fit any category they're used to. That ambiguity is your edge. The market here responds to anything rare, and you are by definition rare.", tags: ["Global Gaijin","Mixed Premium","Novelty Play","Visual Arbitrage"] },
+      middleeastern: { label: "Arabian Nights Japan 🌙", rate: "+2.9 ATT", desc: "Japan's curiosity about the Middle East is quiet but real. You're genuinely rare here — which is the entire play. The novelty factor is high, the market is safe and structured, and your look carries a specific mystique that stands out completely in a Japanese context. It's not a loud market, but the exchange rate is consistent for those who run it right.", tags: ["Arabian Novelty","Genuine Rarity","Quiet Demand","Structured Market"] },
     }
   },
   brazil: {
@@ -632,6 +633,7 @@ const markets = {
       eastasian: { label: "Netflix Dividend 🎬",        rate: "+4.2 ATT", desc: "The Hallyu wave and decades of K-Drama exports have built you a market you never knew existed. Brazilian women are obsessed — and it's not a phase, it's a full cultural shift. You are what they've been watching on Netflix. Do not question it. Do not overthink it. Just go to São Paulo or Rio and let the exchange rate work for you.", tags: ["Netflix Dividend","Hallyu Premium","K-Drama Effect","Cultural Arbitrage"] },
       southasian: { label: "Bollywood in Brazil 🎭",   rate: "+3.7 ATT", desc: "Bollywood's reach in Brazil is more significant than most people realize. There's a growing South Asian cultural presence in São Paulo, and Brazilian women's curiosity about South Asian men is a real and underreported phenomenon. Your exchange rate here is ascending — and ascending markets are where fortunes are made.", tags: ["Bollywood Brazil","Cultural Curiosity","Ascending Market","First-Mover Edge"] },
       mixed:     { label: "Mixed Market King 👑",       rate: "+4.0 ATT", desc: "Brazil is arguably the most racially mixed country on earth — and mixed heritage men thrive in an environment where ambiguity is attractive, where your look is familiar enough to connect and different enough to intrigue. São Paulo and Rio are your optimal environments.", tags: ["Mixed Premium","Racial Fluidity","São Paulo Play","Visual Arbitrage"] },
+      middleeastern: { label: "Sheik Effect Brazil 🌙", rate: "+4.1 ATT", desc: "Brazil has one of the largest Arab diaspora communities on earth — the Lebanese-Brazilian population alone is enormous. That history means Middle Eastern men aren't feared here. They're familiar, associated with wealth, with passion, with culture. Add the visual exotic premium on top and the exchange rate in São Paulo and Rio is genuinely one of the strongest on the board.", tags: ["Sheik Effect","Arab Diaspora","Lebanese Premium","Warm Market"] },
     }
   },
   sweden: {
@@ -643,6 +645,7 @@ const markets = {
       eastasian: { label: "K-Wave Scandinavia 🎌",      rate: "+3.5 ATT", desc: "The Hallyu wave hit Scandinavia hard. K-Drama, K-pop, and Korean beauty culture have built a genuine appetite for East Asian men in Sweden that's still in early innings. The market is curious, the supply is low, and your exchange rate is ascending.", tags: ["K-Wave Nordic","Hallyu Export","Low Supply","Ascending Market"] },
       southasian: { label: "Exotic Factor Sweden ✨",   rate: "+3.3 ATT", desc: "Sweden's progressive culture and genuine global curiosity create a strong premium for men who stand out visually and culturally. As a South Asian man, you're rare enough to be genuinely interesting here — and the market responds to that rarity with real demand.", tags: ["Exotic Factor","Rarity Premium","Progressive Market","Cultural Curiosity"] },
       mixed:     { label: "Global Premium 🌐",           rate: "+3.4 ATT", desc: "Mixed heritage men in Sweden benefit from both the exotic premium and the cultural fluency premium simultaneously. You're interesting visually, you navigate cultures well, and you carry a global energy that Scandinavians find genuinely compelling.", tags: ["Global Premium","Mixed Edge","Dual Dividend","Scandinavian Curiosity"] },
+      middleeastern: { label: "Stockholm Exotic 🌙",    rate: "+3.2 ATT", desc: "Sweden's progressive, globally curious culture creates a real opening for Middle Eastern men who carry themselves with confidence and sophistication. The contrast plays extremely well — dark features, strong presence, cultural depth. The market here is more receptive than most would expect, and the city is one of the most livable on earth.", tags: ["Stockholm Exotic","Contrast Premium","Progressive Market","Cultural Depth"] },
     }
   },
   philippines: {
@@ -654,6 +657,7 @@ const markets = {
       eastasian: { label: "Cultural Proximity Edge 🌏", rate: "+3.5 ATT", desc: "East Asian men carry a strong cultural premium in the Philippines — K-drama, Korean beauty culture, and Japanese media have built massive goodwill. There's also a natural cultural proximity that makes connection easier. Your exchange rate here is backed by decades of soft power.", tags: ["Cultural Proximity","K-Drama Effect","Soft Power","Regional Premium"] },
       southasian: { label: "Bollywood Dividend 🎭",     rate: "+4.1 ATT", desc: "Bollywood has been building cultural goodwill in the Philippines for 40 years — quietly, without a press release. You walk in with four decades of positive association already banked. They've been watching your cinema, your music, your culture. Netflix put the K-Drama guy on the map last year. Bollywood did it decades ago. Your exchange rate is underrated — and underrated markets are where the real money is made.", tags: ["Bollywood Dividend","40-Year Compound","Underrated Market","First-Mover Edge"] },
       mixed:     { label: "Global Appeal 🌐",            rate: "+3.8 ATT", desc: "Mixed heritage men thrive in the Philippines — a culture that itself is beautifully mixed and responds positively to ambiguity. You're visually interesting, culturally fluid, and carry a global energy that plays extremely well here. One of the most receptive markets for mixed men globally.", tags: ["Global Appeal","Mixed Premium","Cultural Fluidity","Natural Fit"] },
+      middleeastern: { label: "Gulf Premium Play 🌙",   rate: "+4.0 ATT", desc: "The Philippines has sent millions of workers to the Gulf — and that economic relationship has built a specific cultural familiarity and aspiration around Middle Eastern men. You walk in with a wealth association already established in the culture's consciousness. Add the exotic visual premium and the genuine warmth of the Filipino market and you've got one of the strongest exchange rates in Southeast Asia.", tags: ["Gulf Premium","Wealth Association","Cultural Familiarity","Warm Market"] },
     }
   },
   poland: {
@@ -665,6 +669,7 @@ const markets = {
       eastasian: { label: "Eastern Curiosity 🎌",        rate: "+3.3 ATT", desc: "Eastern Europe is developing a genuine fascination with East Asian culture — K-drama, anime, and Korean beauty have all been landing hard here. You're ahead of the curve in a market that's just starting to discover what you bring. First mover advantage is real.", tags: ["Eastern Curiosity","K-Wave Export","First Mover","Ascending Market"] },
       southasian: { label: "Exotic Premium EE ✨",       rate: "+3.1 ATT", desc: "South Asian men in Eastern Europe carry a genuine novelty premium — the market hasn't been saturated, the curiosity is real, and your profile stands out in every room. The exchange rate is driven by scarcity and genuine interest.", tags: ["Exotic Premium","Novelty Factor","Low Saturation","Real Demand"] },
       mixed:     { label: "Global Factor 🌐",            rate: "+3.2 ATT", desc: "Mixed heritage men in Eastern Europe benefit from being genuinely unclassifiable — you don't fit any box, and that makes you interesting. The market here is curious about the world and you represent the world in a way that resonates.", tags: ["Global Factor","Mixed Edge","Visual Arbitrage","Cultural Curiosity"] },
+      middleeastern: { label: "Eastern Mystique 🌙",    rate: "+3.9 ATT", desc: "Eastern Europe is one of the strongest markets for Middle Eastern men anywhere on earth. The novelty is extreme — you are genuinely rare, genuinely different, and the cultural curiosity is real and completely unsaturated. Warsaw, Krakow, Bucharest — these cities reward the exotic at a level that's hard to find anywhere else in Europe. Your look, your presence, your cultural energy — all of it reads as premium here.", tags: ["Eastern Mystique","Maximum Novelty","Unsaturated Market","Scarcity Premium"] },
     }
   },
   colombia: {
@@ -676,6 +681,7 @@ const markets = {
       eastasian: { label: "K-Drama Colombia 🎬",         rate: "+3.6 ATT", desc: "K-drama and K-pop have taken Colombia by storm. East Asian men are a genuinely desired demographic in Medellín and Bogotá right now — the cultural curiosity is high and the supply is low. You're operating in a market where demand is growing and competition hasn't caught up yet.", tags: ["K-Drama Premium","Growing Demand","Low Supply","Ascending Market"] },
       southasian: { label: "Bollywood Meets LATAM 🎭",  rate: "+3.5 ATT", desc: "The cultural curiosity about South Asian men in Colombia is real and growing. Bollywood's global reach has planted seeds here, and your profile — the look, the culture, the background — is genuinely novel and interesting to the Colombian market.", tags: ["Bollywood Export","Cultural Curiosity","Growing Demand","Novel Profile"] },
       mixed:     { label: "Medellín Premium 🌺",         rate: "+4.0 ATT", desc: "Mixed heritage men thrive in Colombia — a country that itself celebrates racial mixing and finds ambiguity genuinely attractive. Medellín especially rewards men who look interesting, carry themselves well, and bring a global energy. This is one of the strongest markets for mixed men anywhere.", tags: ["Medellín Premium","Mixed Advantage","Global Energy","Top LATAM Market"] },
+      middleeastern: { label: "Medellín Exotic 🌙",     rate: "+3.8 ATT", desc: "Colombia's strong appetite for foreign men extends powerfully to Middle Eastern men. The dark features, the cultural mystique, the masculine presence — it all translates with force in Medellín and Bogotá. You are genuinely rare in this market, and rarity is the entire game. Colombian women have an image of the passionate, exotic Middle Eastern man built through culture and media — and you get to be the living version of it.", tags: ["Medellín Exotic","Rarity Premium","Cultural Mystique","Passion Dividend"] },
     }
   },
   thailand: {
@@ -687,6 +693,7 @@ const markets = {
       eastasian: { label: "Bangkok Play 🌃",            rate: "+3.7 ATT", desc: "Bangkok is one of the most organized adult cities on earth. Every lane is mapped. The nightlife infrastructure is unmatched globally. East Asian men navigate this market with a unique advantage — cultural proximity plus the K-drama premium that's been building across Southeast Asia.", tags: ["Bangkok Play","Infrastructure Premium","Cultural Edge","Market Depth"] },
       southasian: { label: "South Asian Bangkok 🌟",   rate: "+3.5 ATT", desc: "South Asian men in Bangkok carry both the Western-adjacent premium and the Bollywood cultural awareness that's been building in Thailand for decades. The market here is deep, the infrastructure is excellent, and your profile plays well across the full spectrum of options available.", tags: ["South Asian Edge","Bollywood Awareness","Market Depth","Infrastructure Play"] },
       mixed:     { label: "Global Bangkok 🌐",          rate: "+3.8 ATT", desc: "Mixed heritage men thrive in Bangkok — a city that has seen every type of visitor and still manages to find genuine novelty in ambiguity. Your profile is interesting, your look is rare, and the market infrastructure ensures the exchange rate translates into real ROI.", tags: ["Global Premium","Mixed Edge","Bangkok Depth","Visual Arbitrage"] },
+      middleeastern: { label: "Bangkok Arabian 🌙",     rate: "+3.3 ATT", desc: "Thailand's deep familiarity with Middle Eastern tourism means you're not starting from zero here — but you still carry a genuine exotic premium across the Bangkok market. The infrastructure is world-class, the options are deep, and Middle Eastern men who carry themselves with confidence and intention find a strong and consistent exchange rate.", tags: ["Bangkok Arabian","Tourism Familiarity","Exotic Premium","Infrastructure Play"] },
     }
   },
   korea: {
@@ -698,6 +705,7 @@ const markets = {
       eastasian: { label: "Seoul Standard 🏙️",          rate: "+3.5 ATT", desc: "Seoul rewards style, composure, and confidence above raw looks. The dating culture here is structured and the city is world-class. Your profile fits the Seoul demographic well — and as one of the safest, most livable cities on earth, the quality of life ROI stacks on top of the attraction ROI.", tags: ["Seoul Standard","Style Premium","Safety Dividend","World-Class City"] },
       southasian: { label: "Bollywood Seoul 🎭",         rate: "+3.1 ATT", desc: "Korean women's global curiosity extends to South Asian men more than most people realize. Bollywood's reach is global, and Seoul's increasingly international population means your profile is genuinely interesting here. The market is less saturated than you'd expect.", tags: ["Bollywood Export","Growing Curiosity","Low Saturation","Seoul Edge"] },
       mixed:     { label: "Global Seoul 🌐",              rate: "+3.3 ATT", desc: "Seoul is increasingly cosmopolitan, and mixed heritage men occupy a unique and interesting space in a city that's globally curious but still relatively homogeneous. Your ambiguity is your premium — you're rare, you're interesting, and Seoul rewards what's rare.", tags: ["Global Seoul","Mixed Premium","Scarcity Play","Cosmopolitan Edge"] },
+      middleeastern: { label: "Seoul Arabian Nights 🌙", rate: "+2.8 ATT", desc: "Korea's rapidly globalizing culture is developing genuine curiosity about Middle Eastern men — Gulf investment, global media, and rising Korean-Arab cultural exchange have all raised the profile. You're rare enough to carry a real novelty premium in one of the safest, most livable cities on earth. The market is early, which means the first-mover advantage is yours.", tags: ["Seoul Arabian","Novelty Premium","Globalizing Market","First-Mover Edge"] },
     }
   },
   romania: {
@@ -709,6 +717,7 @@ const markets = {
       eastasian: { label: "Bucharest Curiosity 🎌",      rate: "+3.0 ATT", desc: "K-drama and Korean beauty are landing in Romania the same way they hit every other Eastern European market — and Bucharest is starting to develop genuine curiosity about East Asian men. The market is early. The budget is low. The first-mover advantage is yours to take.", tags: ["Early Market","K-Wave Export","First Mover","Budget Edge"] },
       southasian: { label: "Exotic Budget Play 🌟",      rate: "+2.9 ATT", desc: "Romania is one of the most affordable European markets and for a South Asian man looking to leverage novelty without spending big, Bucharest delivers. The curiosity is real, the cost of living is low, and your profile stands out in every room.", tags: ["Budget Play","Novelty Factor","Affordable Europe","Stand Out Premium"] },
       mixed:     { label: "Bucharest Wildcard 🌐",        rate: "+3.1 ATT", desc: "Mixed heritage men in Bucharest carry the same unclassifiable energy that works across Eastern Europe — but at a fraction of the cost. The women are curious, the city is vibrant, and the exchange rate rewards anyone who looks interesting and moves with purpose.", tags: ["Bucharest Wildcard","Mixed Edge","Budget Arbitrage","Visual Premium"] },
+      middleeastern: { label: "Bucharest Arabian Nights 🌙", rate: "+4.5 ATT", desc: "Romania is arguably the single best European market for Middle Eastern men on the entire board. The novelty is off the charts — you are genuinely rare, the curiosity is completely unsaturated, and the budget is fraction of Western Europe. Romanian women have absorbed the wealthy, passionate, exotic Arabian archetype through media and culture — and almost none of them have ever actually met one. You walk in and you ARE the narrative. Maximum arbitrage at minimum cost. This is the highest exchange rate available to you in Europe.", tags: ["Bucharest Arabian","Maximum Arbitrage","Narrative Premium","Budget King"] },
     }
   }
 };
@@ -725,6 +734,7 @@ const questions = [
       { icon: "🌶️", label: "Hispanic / Latino", sub: "Mexican, Colombian, Puerto Rican, etc.", scores: { poland: 5, sweden: 4, philippines: 3, colombia: 2, brazil: 2, japan: 2, thailand: 2, korea: 2, romania: 4 } },
       { icon: "🎌", label: "East Asian", sub: "Chinese, Japanese, Korean, Filipino, etc.", scores: { brazil: 5, colombia: 4, sweden: 3, poland: 3, philippines: 2, japan: 1, thailand: 3, korea: 2, romania: 1 } },
       { icon: "🎬", label: "South Asian / Indian", sub: "Indian, Pakistani, Bangladeshi, Sri Lankan, etc.", scores: { philippines: 4, colombia: 4, brazil: 2, thailand: 6, sweden: 2, poland: 2, japan: 2, korea: 1, romania: 1 } },
+      { icon: "🌙", label: "Middle Eastern / Arab", sub: "Lebanese, Egyptian, Moroccan, Turkish, Gulf Arab, etc.", scores: { romania: 7, poland: 4, brazil: 4, philippines: 4, colombia: 2, thailand: 2, sweden: 2, japan: 1, korea: 1 } },
       { icon: "🌐", label: "Mixed / Other", sub: "Mixed heritage or other background", scores: { colombia: 3, brazil: 3, thailand: 3, philippines: 3, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
     ]
   },
@@ -757,7 +767,7 @@ const questions = [
     sub: "Capital determines which markets are accessible.",
     options: [
       { icon: "💵", label: "Stretch it", sub: "$50–150/day — ROI-first mindset", scores: { philippines: 4, thailand: 4, colombia: 4, japan: 1, brazil: 3, sweden: 0, poland: 2, korea: 1, romania: 5 }, mixedScores: { thailand: 5, philippines: 4, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
-      { icon: "💳", label: "Comfortable", sub: "$150–300/day — smart spending", scores: { japan: 2, colombia: 4, brazil: 3, sweden: 2, philippines: 3, thailand: 3, poland: 4, korea: 2, romania: 0 }, mixedScores: { thailand: 4, philippines: 4, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
+      { icon: "💳", label: "Comfortable", sub: "$150–300/day — smart spending", scores: { japan: 2, colombia: 4, brazil: 3, sweden: 2, philippines: 3, thailand: 3, poland: 4, korea: 2, romania: 3 }, mixedScores: { thailand: 4, philippines: 4, brazil: 3, colombia: 2, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
       { icon: "🥩", label: "Generous", sub: "$300–500/day — live well, invest wisely", scores: { sweden: 4, japan: 4, brazil: 2, colombia: 3, philippines: 2, thailand: 2, poland: 2, korea: 2, romania: 0 }, mixedScores: { colombia: 5, brazil: 4, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
       { icon: "💎", label: "High Roller", sub: "$500+/day — money is the multiplier", scores: { sweden: 4, japan: 4, brazil: 2, colombia: 3, korea: 3, philippines: 2, thailand: 2, poland: 2, romania: 0 }, mixedScores: { colombia: 5, brazil: 4, thailand: 2, philippines: 1, sweden: 1, japan: 1, poland: 1, korea: 1, romania: 1 } },
     ]
