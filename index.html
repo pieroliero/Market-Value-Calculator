@@ -19,8 +19,8 @@
   :root {
     --gold: #f0a500;
     --gold-dim: #c9841a;
-    --dark: #171734;
-    --card: #22224a;
+    --dark: #0d1226;
+    --card: #1a2035;
     --card2: #151929;
     --text: #f0ede8;
     --muted: #888;
@@ -280,7 +280,7 @@
   }
 
   .result-top {
-    background: linear-gradient(135deg, #1d1d40, #171734);
+    background: linear-gradient(135deg, #1a2035 0%, #0d1226 100%);
     border-bottom: 1px solid var(--border);
     padding: 36px 28px 32px;
     text-align: center;
@@ -993,7 +993,7 @@ function showResult(key, scores) {
 
   // ── SILENT DATA LOGGER ──────────────────────────────────────────────
   try {
-    fetch('https://script.google.com/macros/s/AKfycbyh4qiZ2JrfUtgHC2BHgRyG-463XVt85YeviRsgDe4dp0aTXJoH2QRJmtlHrvV8NRB9/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbywT2-xUbrGImY_M0Hihg7F0G6A2qaUrvF-7MP2S_CEF4hKc8ewlxxkCzPRxgXSmUM/exec', {
       method: 'POST',
       mode: 'no-cors',
       body: JSON.stringify({
@@ -1018,7 +1018,7 @@ function submitGuideEmail(marketKey) {
   }
   btn.disabled = true;
   btn.textContent = 'Sending...';
-  fetch('https://script.google.com/macros/s/AKfycbyh4qiZ2JrfUtgHC2BHgRyG-463XVt85YeviRsgDe4dp0aTXJoH2QRJmtlHrvV8NRB9/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbywT2-xUbrGImY_M0Hihg7F0G6A2qaUrvF-7MP2S_CEF4hKc8ewlxxkCzPRxgXSmUM/exec', {
     method: 'POST',
     mode: 'no-cors',
     body: JSON.stringify({
