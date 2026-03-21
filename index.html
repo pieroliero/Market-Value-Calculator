@@ -954,13 +954,18 @@ function showResult(key, scores) {
   const pct = Math.round((maxScore / (questions.length * 5)) * 100);
   const displayRate = computeDisplayRate(p.rate, answers[1], answers[2], answers[3]);
 
+  // Store for reveal after email
+  window._resultFlag  = m.flag;
+  window._resultCity  = m.city;
+  window._resultLabel = p.label;
+
   document.getElementById('result-card').innerHTML = `
     <div class="result-top">
       <div class="result-badge">Your Highest Market</div>
-      <span class="result-flag">${m.flag}</span>
-      <div class="result-city">${m.city}</div>
+      <span class="result-flag" id="result-flag" style="filter:blur(12px);user-select:none;">${m.flag}</span>
+      <div class="result-city" id="result-city" style="filter:blur(8px);user-select:none;">${m.city}</div>
       <div class="result-country">${m.country}</div>
-      <div class="result-premium">${p.label}</div>
+      <div class="result-premium" id="result-premium" style="filter:blur(4px);user-select:none;">${p.label}</div>
     </div>
     <div class="result-body">
       <div class="result-exchange">
@@ -969,7 +974,7 @@ function showResult(key, scores) {
         <div class="exchange-sub">ATT = Attraction Rating · ${pct}% profile match</div>
       </div>
       <div class="guide-gate">
-        <div class="guide-gate-label">🔒 <strong style="color:var(--text)">Your breakdown is locked.</strong> Drop your email to unlock the full market intel.</div>
+        <div class="guide-gate-label">🌍 <strong style="color:var(--gold)">Your top market is in ${m.country}.</strong><br><span style="color:var(--muted);font-size:13px;line-height:1.6;display:block;margin-top:6px;">Enter your email to unlock the exact country + full market breakdown.</span></div>
         <div class="guide-gate-row">
           <input class="guide-email-input" id="guide-email" type="email" placeholder="your@email.com" />
           <button class="btn-guide-submit" id="guide-btn" onclick="submitGuideEmail('${key}')">Unlock →</button>
@@ -1032,6 +1037,15 @@ function submitGuideEmail(marketKey) {
     })
   }).catch(() => {});
   btn.textContent = '✓ Unlocked!';
+
+  // Reveal flag, city, and premium label
+  const flagEl = document.getElementById('result-flag');
+  const cityEl = document.getElementById('result-city');
+  const premEl = document.getElementById('result-premium');
+  if (flagEl) { flagEl.style.filter = 'none'; flagEl.textContent = window._resultFlag || ''; }
+  if (cityEl) { cityEl.style.filter = 'none'; cityEl.textContent = window._resultCity || ''; }
+  if (premEl) { premEl.style.filter = 'none'; premEl.textContent = window._resultLabel || ''; }
+
   document.getElementById('guide-download').style.display = 'block';
   const lockedBlur = document.getElementById('locked-blur');
   if (lockedBlur) lockedBlur.classList.add('unlocked');
