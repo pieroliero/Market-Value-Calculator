@@ -317,8 +317,10 @@
   }
   .result-country {
     font-size: 14px;
-    color: var(--muted);
+    color: #c8c5c0;
     margin-bottom: 20px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
   }
   .result-premium {
     display: inline-flex;
@@ -345,10 +347,11 @@
   }
   .exchange-label {
     font-size: 11px;
-    color: var(--muted);
+    color: #c8c5c0;
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: 8px;
+    font-weight: 700;
   }
   .exchange-rate {
     font-size: 32px;
@@ -358,8 +361,9 @@
   }
   .exchange-sub {
     font-size: 13px;
-    color: var(--muted);
+    color: #c8c5c0;
     margin-top: 6px;
+    font-weight: 500;
   }
 
   .result-desc {
@@ -630,7 +634,6 @@
 
 <script>
 // ── MARKETS ─────────────────────────────────────────────────────────
-// Background keys match Q1 option index: 0=white,1=black,2=latino,3=eastasian,4=southasian,5=middleeastern,6=mixed
 const BG = ['white','black','latino','eastasian','southasian','middleeastern','mixed'];
 
 const markets = {
@@ -833,7 +836,6 @@ function renderQ(direction = 'right') {
   const q = questions[currentQ];
   const card = document.getElementById('q-card');
 
-  // progress dots
   const progress = document.getElementById('q-progress');
   progress.innerHTML = questions.map((_, i) => {
     let cls = i < currentQ ? 'q-dot done' : i === currentQ ? 'q-dot active' : 'q-dot';
@@ -844,7 +846,6 @@ function renderQ(direction = 'right') {
   document.getElementById('q-title').textContent = q.title;
   document.getElementById('q-sub').textContent = q.sub;
 
-  // options
   const container = document.getElementById('q-options');
   container.innerHTML = q.options.map((opt, i) => `
     <div class="opt ${answers[currentQ] === i ? 'selected' : ''}" onclick="selectOpt(${i})">
@@ -856,13 +857,11 @@ function renderQ(direction = 'right') {
     </div>
   `).join('');
 
-  // nav
   document.getElementById('btn-back').style.display = currentQ > 0 ? 'block' : 'none';
   const nextBtn = document.getElementById('btn-next');
   nextBtn.disabled = answers[currentQ] === undefined;
   nextBtn.textContent = currentQ === questions.length - 1 ? 'Calculate My Market →' : 'Continue →';
 
-  // animate
   card.classList.remove('slide-in-right', 'slide-in-left', 'slide-out-left');
   void card.offsetWidth;
   card.classList.add(direction === 'right' ? 'slide-in-right' : 'slide-in-left');
@@ -908,7 +907,6 @@ function calculate() {
   setTimeout(() => {
     clearInterval(interval);
 
-    // tally scores
     const scores = {};
     Object.keys(markets).forEach(k => scores[k] = 0);
 
@@ -921,26 +919,21 @@ function calculate() {
       });
     });
 
-    // find winner
     const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
     showResult(winner, scores);
   }, 2200);
 }
 
 // ── ATT RATE MODIFIER ─────────────────────────────────────────────────
-// Adjusts the displayed exchange rate based on style, age, and budget.
-// High-effort + generous profiles keep the full rate; low-effort + budget profiles get a realistic reduction.
 function computeDisplayRate(baseRate, styleIdx, ageIdx, budgetIdx) {
   const match = baseRate.match(/([+-]?\d+\.?\d*)/);
   if (!match) return baseRate;
   let val = parseFloat(match[1]);
-  // Penalties for low-effort / budget profiles
-  if (styleIdx === 4) val -= 0.5;   // relaxed / low-effort
-  if (budgetIdx === 0) val -= 0.4;  // stretch it
-  if (ageIdx === 0)    val -= 0.3;  // 18–25
-  // Small boost for premium profiles
-  if (budgetIdx >= 2)  val += 0.2;  // generous or high roller
-  if (styleIdx === 0 || styleIdx === 2) val += 0.1; // polished or business casual
+  if (styleIdx === 4) val -= 0.5;
+  if (budgetIdx === 0) val -= 0.4;
+  if (ageIdx === 0)    val -= 0.3;
+  if (budgetIdx >= 2)  val += 0.2;
+  if (styleIdx === 0 || styleIdx === 2) val += 0.1;
   val = Math.max(1.5, Math.min(5.0, val));
   return '+' + val.toFixed(1) + ' ATT';
 }
@@ -954,7 +947,6 @@ function showResult(key, scores) {
   const pct = Math.round((maxScore / (questions.length * 5)) * 100);
   const displayRate = computeDisplayRate(p.rate, answers[1], answers[2], answers[3]);
 
-  // Store for reveal after email
   window._resultFlag  = m.flag;
   window._resultCity  = m.city;
   window._resultLabel = p.label;
@@ -974,7 +966,7 @@ function showResult(key, scores) {
         <div class="exchange-sub">ATT = Attraction Rating · ${pct}% profile match</div>
       </div>
       <div class="guide-gate">
-        <div class="guide-gate-label">🌍 <strong style="color:var(--gold)">Your top market is in ${m.country}.</strong><br><span style="color:var(--muted);font-size:13px;line-height:1.6;display:block;margin-top:6px;">Enter your email to unlock the exact country + full market breakdown.</span></div>
+        <div class="guide-gate-label">🌍 <strong style="color:var(--gold)">Your top market is in ${m.country}.</strong><br><span style="color:#c8c5c0;font-size:13px;line-height:1.6;display:block;margin-top:6px;">Enter your email to unlock the exact country + full market breakdown.</span></div>
         <div class="guide-gate-row">
           <input class="guide-email-input" id="guide-email" type="email" placeholder="your@email.com" />
           <button class="btn-guide-submit" id="guide-btn" onclick="submitGuideEmail('${key}')">Unlock →</button>
@@ -988,7 +980,8 @@ function showResult(key, scores) {
         <div class="result-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
         <div class="result-desc">${p.desc}</div>
         <div class="result-cta">
-          <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" class="btn-secondary" target="_blank" style="border-color:rgba(88,101,242,0.5);color:#fff;font-size:15px;font-weight:700;padding:16px 24px;">🌍 Passport Pro Discord — $2.99/mo</a>
+          <a href="https://whop.com/passport-pro/the-world-is-yours-0d/" class="btn-secondary" target="_blank" style="border-color:rgba(88,101,242,0.5);color:#fff;font-size:15px;font-weight:700;padding:16px 24px;">🌍 The Discord Where the Real Intel Lives — $2.99</a>
+          <p style="text-align:center;font-size:12px;color:rgba(240,237,232,0.45);margin-top:10px;letter-spacing:0.3px;">6,500+ members. Real trips. Real results.</p>
         </div>
       </div>
     </div>
@@ -996,7 +989,6 @@ function showResult(key, scores) {
 
   showScreen('screen-result');
 
-  // ── SILENT DATA LOGGER ──────────────────────────────────────────────
   try {
     fetch('https://script.google.com/macros/s/AKfycbywT2-xUbrGImY_M0Hihg7F0G6A2qaUrvF-7MP2S_CEF4hKc8ewlxxkCzPRxgXSmUM/exec', {
       method: 'POST',
@@ -1038,7 +1030,6 @@ function submitGuideEmail(marketKey) {
   }).catch(() => {});
   btn.textContent = '✓ Unlocked!';
 
-  // Reveal flag, city, and premium label
   const flagEl = document.getElementById('result-flag');
   const cityEl = document.getElementById('result-city');
   const premEl = document.getElementById('result-premium');
@@ -1061,12 +1052,10 @@ function sendHeight() {
   window.parent.postMessage({ iframeHeight: h }, '*');
 }
 
-// ── SERVICE WORKER REGISTRATION ────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
 
-// Use ResizeObserver for smooth continuous resizing
 if (window.ResizeObserver) {
   const ro = new ResizeObserver(() => sendHeight());
   ro.observe(document.body);
